@@ -39,6 +39,9 @@ class Post(models.Model):
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
 
+    def __str__(self):
+        return self.commentPost.author.authorUser.username
+
     def like(self):
         self.rating += 1
         self.save()
@@ -48,7 +51,7 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return '{} ... {}'.format(self.text[0:123], str(self.rating))
+        return self.text[0:123]+ '...'
 
 
 class Comment(models.Model):
@@ -57,6 +60,9 @@ class Comment(models.Model):
     text = models.TextField()
     dateCreation = models.DateTimeField(auto_now_add=True)
     rating = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return self.commentUser.username
 
     def like(self):
         self.rating += 1
