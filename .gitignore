@@ -100,8 +100,8 @@ pip-selfcheck.json
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
+#db.sqlite3
+#db.sqlite3-journal
 media
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
@@ -111,8 +111,8 @@ media
 ### Python template
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[cod]
-*$py.class
+#*.py[cod]
+#*$py.class
 
 # C extensions
 *.so
