@@ -8,6 +8,11 @@ class Author(models.Model):
     ratingAuthor = models.SmallIntegerField(default=0)
 
     def update_rating(self):
+        # authorCommentRat = Post.objects.filter(author_id=self.pk).aggregate(Sum('rating'))
+        # authorCommentRat =self.post_set.
+        # acRat = 0
+        # acRat = acRat.get('rating')
+
         postRat = self.post_set.aggregate(postRating=Sum('rating'))
         pRat = 0
         pRat += postRat.get('postRating')
@@ -16,7 +21,7 @@ class Author(models.Model):
         cRat = 0
         cRat += commentRat.get('commentRating')
 
-        self.ratingAuthor = pRat*3 + cRat
+        self.ratingAuthor = pRat * 3 + cRat
         self.save()
 
 
@@ -39,9 +44,6 @@ class Post(models.Model):
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
 
-    def __str__(self):
-        return self.commentPost.author.authorUser.username
-
     def like(self):
         self.rating += 1
         self.save()
@@ -51,7 +53,7 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return self.text[0:123]+ '...'
+        return self.text[0:123] + '...'
 
 
 class Comment(models.Model):
