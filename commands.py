@@ -24,7 +24,7 @@ post6 = Post.objects.get(pk=6)
 category1 = Category.objects.get(name='Sport')
 category2 = Category.objects.get(name='Space')
 category3 = Category.objects.get(name='IT')
-post1.postCategory.add(category1, category2, category3)
+post1.postCategory.add(category1, category2, category3)  # Добавляем категории постам
 post2.postCategory.add(category2)
 post3.postCategory.add(category3)
 post4.postCategory.add(category3, category2, category1)
@@ -73,5 +73,20 @@ a1.update_rating()  # обновить их
 a2.update_rating()  # рейтинги
 a1.ratingAuthor  # И показать рейтинг
 a2.ratingAuthor  # каждого автора
-bestAuthor = Author.objects.all().order_by('-ratingAuthor').values('authorUser', 'ratingAuthor')[0]  # Лучший автор
-bestPost = Post.objects.all().order_by('-rating').values('author', 'rating')[0]  # Лучший пост
+
+print(Author.objects.all().order_by('-ratingAuthor').values('authorUser__username', 'ratingAuthor')[
+          0])  # Лучший автор и его рейтинг
+print(Author.objects.all().order_by('-ratingAuthor').values('authorUser__username')[0][
+          'authorUser__username'])  # Лучший автор имя
+print(Post.objects.all().order_by('-rating').values('author__authorUser__username', 'rating')[0])  # Лучший пост
+print(
+    Post.objects.all().order_by('-rating').values('dateCreation', 'author__authorUser__username', 'rating', 'title')[0],
+    Post.objects.all().order_by('-rating')[
+        0].preview())  # Дата добавления, юзернейм,рейтинг, заголовок, превью лучшей статьи
+print(Comment.objects.filter(
+    commentPost__author__authorUser_id=Post.objects.all().order_by('-rating').values('author__authorUser_id').first()[
+        'author__authorUser_id']).values('text'))  # Все комментарии к лучшей статье
+print(Comment.objects.filter(
+    commentPost__author__authorUser_id=Post.objects.all().order_by('-rating').values('author__authorUser_id').first()[
+        'author__authorUser_id']).values('dateCreation', 'commentUser__username', 'rating',
+                                         'text'))  # Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье. Что бы не значила эта формулировка
