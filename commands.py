@@ -1,15 +1,14 @@
 from News.models import *
 
-
-user1 = User.objects.create_user('Петр')
-user2 = User.objects.create_user('Иван')
-user3 = User.objects.create_user('Сергей')
-Author1 = Author.objects.create(authorUser=user1)
-Author2 = Author.objects.create(authorUser=user2)
-Category.objects.create(name='Space')
-Category.objects.create(name='IT')
-Category.objects.create(name='Sport')
-Category.objects.create(name='Policy')
+user1 = User.objects.create_user('Петр')  # Создаем
+user2 = User.objects.create_user('Иван')  # трех
+user3 = User.objects.create_user('Сергей')  # пользователей
+Author1 = Author.objects.create(authorUser=user1)  # Сразу делаем двух
+Author2 = Author.objects.create(authorUser=user2)  # пользователей авторами
+Category.objects.create(name='Space')  # Создаем
+Category.objects.create(name='IT')  # категории
+Category.objects.create(name='Sport')  # для
+Category.objects.create(name='Policy')  # новостей
 Post.objects.create(author_id=1, title='Заголовок новости 1', text='Текст новости 1, про непонятно что', categoryType='AR')
 Post.objects.create(author_id=2, title='Заголовок новости 2', text='Текст новости 2, про IT', categoryType='AR')
 Post.objects.create(author_id=2, title='Заголовок новости 3', text='Текст новости 3, про Sport', categoryType='NW')
@@ -44,17 +43,35 @@ Comment.objects.create(commentUser=user1, commentPost=post3, text='Спорти�
 Comment.objects.create(commentUser=user2, commentPost=post3, text='ЗОЖ обман и провокация, занимайтесь НВП и будете здоровы')
 Comment.objects.create(commentUser=user2, commentPost=post4, text='Штанга обыграла вратаря')
 Comment.objects.create(commentUser=user3, commentPost=post4, text='На юге Москвы сгорел склад с огнетушителями')
-post1.like()
-post2.dislike()
-Author1.update_rating()
-Author.objects.get(authorUser_id=1).update_rating()
-Author.objects.get(authorUser_id=2).update_rating()
-Author.objects.get(authorUser=User.objects.get(username='Петр')).update_rating()
-a1 = Author.objects.get(authorUser_id=1)
-a2 = Author.objects.get(authorUser_id=2)
-a1.ratingAuthor
-a2.ratingAuthor
-bestAuthor = Author.objects.all().order_by('-ratingAuthor').values('authorUser','ratingAuthor')[0]
-bestPost = Post.objects.all().order_by('-rating').values('author','rating')[0]
+comm1 = Comment.objects.get(pk=1)
+comm2 = Comment.objects.get(pk=2)
+comm3 = Comment.objects.get(pk=3)
+comm4 = Comment.objects.get(pk=4)
+comm5 = Comment.objects.get(pk=5)
+comm6 = Comment.objects.get(pk=6)
+comm7 = Comment.objects.get(pk=7)
+comm8 = Comment.objects.get(pk=8)
+comm9 = Comment.objects.get(pk=9)
+comm10 = Comment.objects.get(pk=10)
+comm11 = Comment.objects.get(pk=11)
 
-Author.objects.post_set.aggregate(pk=1)
+post1.like()  # Накидать по вкусу в любые посты
+post2.dislike()
+comm1.like() # Накидать по вкусу в любые комменты
+comm1.dislike()
+
+Comment.objects.get(commentUser=3, commentPost=1).like()
+Author1.update_rating()  # Если шелл не перегружали к этому моменту
+Author2.update_rating()  # то можно таким образом обновить рейтинг у авторов
+Author.objects.get(authorUser_id=1).update_rating()  # Если шелл перезапускали то
+Author.objects.get(authorUser_id=2).update_rating()  # можно обновить рейтинг у авторов таким образом
+Author.objects.get(
+    authorUser=User.objects.get(username='Петр')).update_rating()  # Если мы хотим обновить рейтинг у Петра
+a1 = Author.objects.get(authorUser_id=1)  # Если перезагружали шелл
+a2 = Author.objects.get(authorUser_id=2)  # то можно присвоить переменные авторам
+a1.update_rating()  # обновить их
+a2.update_rating()  # рейтинги
+a1.ratingAuthor  # И показать рейтинг
+a2.ratingAuthor  # каждого автора
+bestAuthor = Author.objects.all().order_by('-ratingAuthor').values('authorUser', 'ratingAuthor')[0]  # Лучший автор
+bestPost = Post.objects.all().order_by('-rating').values('author', 'rating')[0]  # Лучший пост
