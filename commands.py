@@ -53,5 +53,8 @@ Author.objects.get(authorUser=User.objects.get(username='Петр')).update_rati
 a1 = Author.objects.get(authorUser_id=1)
 a2 = Author.objects.get(authorUser_id=2)
 a1.ratingAuthor
+a2.ratingAuthor
 bestAuthor = Author.objects.all().order_by('-ratingAuthor').values('authorUser','ratingAuthor')[0]
 bestPost = Post.objects.all().order_by('-rating').values('author','rating')[0]
+
+Author.objects.post_set.aggregate(pk=1)

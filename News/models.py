@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
 
 
 class Author(models.Model):
@@ -8,20 +9,14 @@ class Author(models.Model):
     ratingAuthor = models.SmallIntegerField(default=0)
 
     def update_rating(self):
-        # authorCommentRat = Post.objects.filter(author_id=self.pk).aggregate(Sum('rating'))
-        # authorCommentRat =self.post_set.
-        # acRat = 0
-        # acRat = acRat.get('rating')
+        authorPostRating: int = Post.objects.filter(author_id=self.pk).aggregate(Coalesce(Sum('rating'), 0))
+        authorCommentRating: int = Comment.objects.filter(commentUser_id=self.authorUser).aggregate(
+            Coalesce(Sum('rating'), 0))
+        authorPostCommentRating: int = Comment.objects.filter(
+            commentPost__author__authorUser=self.authorUser).aggregate(
+            Coalesce(Sum('rating'), 0))
 
-        postRat = self.post_set.aggregate(postRating=Sum('rating'))
-        pRat = 0
-        pRat += postRat.get('postRating')
-
-        commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('rating'))
-        cRat = 0
-        cRat += commentRat.get('commentRating')
-
-        self.ratingAuthor = pRat * 3 + cRat
+        self.ratingAuthor: int = authorPostRating * 3 + authorCommentRating + authorPostCommentRating
         self.save()
 
 
