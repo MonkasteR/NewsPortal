@@ -9,14 +9,14 @@ class Author(models.Model):
     ratingAuthor = models.SmallIntegerField(default=0)
 
     def update_rating(self):
-        authorPostRating: int = Post.objects.filter(author_id=self.pk).aggregate(Coalesce(Sum('rating'), 0))
-        authorCommentRating: int = Comment.objects.filter(commentUser_id=self.authorUser).aggregate(
+        authorPostRating = Post.objects.filter(author_id=self.pk).aggregate(Coalesce(Sum('rating'), 0))
+        authorCommentRating = Comment.objects.filter(commentUser_id=self.authorUser).aggregate(
             Coalesce(Sum('rating'), 0))
-        authorPostCommentRating: int = Comment.objects.filter(
+        authorPostCommentRating = Comment.objects.filter(
             commentPost__author__authorUser=self.authorUser).aggregate(
             Coalesce(Sum('rating'), 0))
 
-        self.ratingAuthor: int = authorPostRating * 3 + authorCommentRating + authorPostCommentRating
+        self.ratingAuthor = authorPostRating * 3 + authorCommentRating + authorPostCommentRating
         self.save()
 
 
