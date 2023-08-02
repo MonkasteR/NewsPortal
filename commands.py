@@ -82,7 +82,7 @@ print(Post.objects.all().order_by('-rating').values('author__authorUser__usernam
 print(
     Post.objects.all().order_by('-rating').values('dateCreation', 'author__authorUser__username', 'rating', 'title')[0],
     Post.objects.all().order_by('-rating')[
-        0].preview())  # Дата добавления, юзернейм,рейтинг, заголовок, превью лучшей статьи
+        0].preview())  # Дата добавления, юзернейм, рейтинг, заголовок, превью лучшей статьи
 print(Comment.objects.filter(
     commentPost__author__authorUser_id=Post.objects.all().order_by('-rating').values('author__authorUser_id').first()[
         'author__authorUser_id']).values('text'))  # Все комментарии к лучшей статье
