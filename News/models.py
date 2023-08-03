@@ -26,7 +26,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     NEWS = 'NW'
     ARTICLE = 'AR'
     CATEGORY_CHOICES = (
@@ -41,11 +41,11 @@ class Post(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def like(self):
-        self.rating += 1
+        self.rating = models.F('rating') + 1
         self.save()
 
     def dislike(self):
-        self.rating -= 1
+        self.rating = models.F('rating') - 1
         self.save()
 
     def preview(self):
@@ -63,11 +63,11 @@ class Comment(models.Model):
         return self.commentUser.username
 
     def like(self):
-        self.rating += 1
+        self.rating = models.F('rating') + 1
         self.save()
 
     def dislike(self):
-        self.rating -= 1
+        self.rating = models.F('rating') - 1
         self.save()
 
 
