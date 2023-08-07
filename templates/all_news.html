@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block title %}
-    Products
+    Posts
 {% endblock title %}
 
 {% block content %}
@@ -12,7 +12,7 @@
     в указанном формате. -->
     <h3>{{ time_now|date:'M d Y' }}</h3>
     <hr>
-    {% if news %}
+    {% if all_news %}
         <table>
             <tr>
                 <td>Заголовок</td>
@@ -22,13 +22,13 @@
                 <td>Рейтинг</td>
             </tr>
 
-            {% for new in news %}
+            {% for x in all_news %}
                 <tr>
-                    <td>{{ new.title }}</td>
-                    <td>{{ new.text|truncatechars:20 }}</td>
-                    <td>{{ new.postCategory }}</td>
-                    <td>{{ new.author }}</td>
-                    <td>{{ new.rating }}</td>
+                    <td>{{ x.title }}</td>
+                    <td>{{ x.text|truncatechars:20 }}</td>
+                    <td>{{ x.postCategory }}</td>
+                    <td>{{ x.author }}</td>
+                    <td>{{ x.rating }}</td>
                 </tr>
             {% endfor %}
 
