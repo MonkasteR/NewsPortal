@@ -1,5 +1,5 @@
 {% extends 'flatpages/default.html' %}
-
+{% load custom_filters %}
 
 {% block title %}
     News {{ one_news.pk }}
@@ -7,8 +7,8 @@
 
 
 {% block content %}
-    <h4>Заголовок: </h4>{{ one_news.title }}</br>
-    <h4>Текст: </h4>{{ one_news.text }}</br>
+    <h4>Заголовок: </h4>{{ one_news.title|censorship }}</br>
+    <h4>Текст: </h4>{{ one_news.text|censorship }}</br>
     <h4>Дата создания: </h4>{{ one_news.dateCreation|date:'d M Y' }}</br>
     <h4>Рейтинг: </h4>{{ one_news.rating }}</br>
     <h4>Категория: </h4>{{ one_news.categoryType }}</br>
