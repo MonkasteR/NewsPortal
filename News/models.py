@@ -21,7 +21,7 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return self.authorUser
+        return self.authorUser.username
 
     class Meta:
         verbose_name = 'Автор'
@@ -55,8 +55,7 @@ class Post(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def __str__(self):
-        # return f'{self.title} : {self.text[0:123]}...'
-        return f'{self.author.authorUser} : {self.title} : {self.text[0:123]}...'
+        return f'{self.author.authorUser.username} : {self.title} : {self.text[0:123]}...'
 
     def like(self):
         self.rating = models.F('rating') + 1
@@ -100,10 +99,3 @@ class Comment(models.Model):
 class PostCategory(models.Model):
     postThrow = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    # class Meta:
-    #     verbose_name = 'Категории поста'
-    #     verbose_name_plural = 'Категории постов'
-
-    # def __str__(self):
-    #     return self.postThrow
