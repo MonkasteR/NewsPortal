@@ -2,10 +2,14 @@
 
 
 {% block title %}
-    News
+    News {{ one_news.pk }}
 {% endblock title %}
 
 
 {% block content %}
-    <h1>{{ one_news }}</h1>
+    <h4>Заголовок: </h4>{{ one_news.title }}</br>
+    <h4>Текст: </h4>{{ one_news.text }}</br>
+    <h4>Дата создания: </h4>{{ one_news.dateCreation|date:'d M Y' }}</br>
+    <h4>Рейтинг: </h4>{{ one_news.rating }}</br>
+    <h4>Категория: </h4>{{ one_news.categoryType }}</br>
 {% endblock content %}
