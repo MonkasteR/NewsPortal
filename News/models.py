@@ -40,22 +40,23 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     NEWS = 'NW'
     ARTICLE = 'AR'
     CATEGORY_CHOICES = (
         (NEWS, "Новость"),
         (ARTICLE, 'Статья'),
     )
-    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
     dateCreation = models.DateTimeField(auto_now_add=True)
+    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
 
     def __str__(self):
-        return f'{self.title} : {self.text[0:123]}...'
+        # return f'{self.title} : {self.text[0:123]}...'
+        return f'{self.author.authorUser} : {self.title} : {self.text[0:123]}...'
 
     def like(self):
         self.rating = models.F('rating') + 1

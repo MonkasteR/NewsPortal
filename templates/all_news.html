@@ -10,7 +10,7 @@
     и применяем к ней фильтр date. По назначению этот фильтр очень похож
     на метод strftime у объекта datetime в Python — вывод времени
     в указанном формате. -->
-{#    <h3>{{ time_now|date:'d mm Y' }}</h3>#}
+{#    <h3>{{ time_now|date:'d m Y' }}</h3>#}
     <hr>
     {% if all_news %}
         <table>
@@ -23,10 +23,10 @@
 {#                <td>Рейтинг</td>#}
             </tr>
 
-            {% for one_news in all_news %}
+            {% for one_news in all_news%}
                 <tr>
                     <td>{{ one_news.title }}</td>
-                    <td>{{ one_news.dateCreation|date:'d/m/Y' }}</td>
+                    <td>{{ one_news.dateCreation|date:'d.m.Y' }}</td>
                     <td>{{ one_news.text|truncatechars:20 }}</td>
 {#                    <td>{{ one_news.postCategory }}</td>#}
 {#                    <td>{{ one_news.author }}</td>#}
