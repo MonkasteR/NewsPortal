@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %}
+{% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% block title %}
-    Posts
+    Новости
 {% endblock title %}
 
 {% block content %}
@@ -10,21 +10,24 @@
     {% if all_news %}
         <table>
             <tr>
-                <td>Заголовок</td>
-                <td>Дата публикации</td>
-                <td>Краткое содержание</td>
+                <td style="text-align: center;">Заголовок</td>
+                <td style="text-align: center; width: 300px;">Дата публикации</td>
+                <td style="width: 300px;">Краткое содержание</td>
             </tr>
 
-            {% for one_news in all_news%}
+            {% for one_news in all_news %}
                 <tr>
-                    <td>{{ one_news.title|censorship }}</td>
-                    <td>{{ one_news.dateCreation|date:'d.m.Y' }}</td>
-                    <td>{{ one_news.text|truncatechars:20|censorship }}</td>
+                    <td><a href="/news/{{ one_news.pk }}">{{ one_news.title|censorship }}</td>
+                    <!-- Цензура заголовков -->
+                    <td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'d.m.Y' }}</td>
+                    <td style="width: 300px;"><a
+                            href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>
+                    <!-- Цензура текста новостей -->
                 </tr>
             {% endfor %}
 
         </table>
     {% else %}
-        <h2>Новостей нет!</h2>
+        <h2>Новостей нет!</h2> <!-- Если новостей нет, так и напишем -->
     {% endif %}
 {% endblock content %}

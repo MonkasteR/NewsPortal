@@ -1,15 +1,15 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %}
+{% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 
 {% block title %}
-    News {{ one_news.pk }}
+    News {{ one_news.pk }} <!-- Заголовок с номером новости -->
 {% endblock title %}
 
 
 {% block content %}
-    <h4>Заголовок: </h4>{{ one_news.title|censorship }}</br>
-    <h4>Текст: </h4>{{ one_news.text|censorship }}</br>
-    <h4>Дата создания: </h4>{{ one_news.dateCreation|date:'d M Y' }}</br>
+    <h4>Заголовок: </h4>{{ one_news.title|censorship }}</br> <!-- Цензура заголовков -->
+    <h4>Текст: </h4>{{ one_news.text|censorship }}</br> <!-- Цензура текста новости -->
+    <h4>Дата создания: </h4>{{ one_news.dateCreation|date:'H:i  d M Y' }}</br> <!-- Время и дата создания новости -->
     <h4>Рейтинг: </h4>{{ one_news.rating }}</br>
     <h4>Категория: </h4>{{ one_news.categoryType }}</br>
 {% endblock content %}
