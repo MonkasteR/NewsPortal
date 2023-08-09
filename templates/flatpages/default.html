@@ -34,7 +34,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 {% for one_news in news_for_header %}     <!-- Цикл для генерации списка новостей -->
                                     <li><a class="dropdown-item" href="/news/{{ one_news.pk }}">{{ one_news.title }}</a>
-                                    </li> <!-- Работает только на главной, как сделать в новостях не придумал -->
+                                    </li> <!-- Работает только на всех сстраничках -->
                                 {% endfor %}
                             </ul>
                         </li>
