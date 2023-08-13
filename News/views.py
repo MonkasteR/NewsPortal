@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from .filters import NewsFilter
 from .forms import NewsForm
@@ -31,7 +31,7 @@ class NewsCreate(CreateView):
     success_url = reverse_lazy('posts_list')
 
 
-class NewsUpdate(CreateView):
+class NewsUpdate(UpdateView):
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'

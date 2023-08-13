@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
-
+{% load custom_filters %} <!-- Подключаем фильтр цензуры -->
+{% load custom_tags %}
 {% block content %}
     <h1>Новость {{ one_news.pk }}</h1>
     <form action="" method="post">

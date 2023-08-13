@@ -1,6 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
-
+{% load custom_tags %}
 {% block title %}
     News {{ one_news.pk }} <!-- Заголовок с номером новости -->
 {% endblock title %}
