@@ -1,7 +1,7 @@
 {% extends 'flatpages/default.html' %}
 
 {% block content %}
-    <h1>Новость</h1>
+    <h1>Новость {{ one_news.pk }}</h1>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}
