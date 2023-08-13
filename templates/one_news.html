@@ -17,5 +17,5 @@
     <h4>Дата создания: </h4>{{ one_news.dateCreation|date:'H:i  d M Y' }}</br>
     <!-- Время и дата создания новости. Время, чтобы было видно, что работает сортировка, а то все новости в один день -->
     <h4>Рейтинг: </h4>{{ one_news.rating }}</br>
-    <h4>Категория: </h4>{{ one_news.categoryType }}</br>
+    <h4>Категория: </h4>{{ one_news.get_categoryType_display }}</br>  <!-- Выводим человеческое значение -->
 {% endblock content %}
