@@ -8,6 +8,7 @@ class PostList(ListView):
     ordering = '-dateCreation'  # сортируем по убыванию даты, сначала самая свежая новость, далее по убыванию
     template_name = 'all_news.html'
     context_object_name = 'all_news'
+    paginate_by = 3
 
 
 class PostDetail(DetailView):
