@@ -1,8 +1,11 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %} <!-- Подключаем фильтр цензуры -->
-{% load custom_tags %}
+
+{% block title %}
+    Новость {{ object.pk }}
+{% endblock title %}
+
 {% block content %}
-    <h1>Новость {{ one_news.pk }}</h1>
+    <h1>Новость {{ object.pk }} <br> {{ object.title }}</h1>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}

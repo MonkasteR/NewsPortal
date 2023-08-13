@@ -1,12 +1,15 @@
 {% extends 'flatpages/default.html' %}
-{% load custom_filters %} <!-- Подключаем фильтр цензуры -->
-{% load custom_tags %}
+
+{% block title %}
+    Удаление новости {{ object.pk }}
+{% endblock title %}
+
 {% block content %}
-    <h1>Удаление новости {{ one_news.pk }}</h1>
+    <h1>Удаление новости {{ object.pk }}</h1>
     <hr>
     <form action="" method="post">
         {% csrf_token %}
-        <p>Удаляем "{{ object.name }}"?</p>
+        <p>Удаляем "{{ object.title }}"?</p>
         <input type="submit" value="Delete"/>
     </form>
 {% endblock content %}
