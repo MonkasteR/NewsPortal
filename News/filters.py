@@ -14,9 +14,14 @@ class NewsFilter(FilterSet):
         ),
     )
 
+    # postCategory = CharFilter(
+    #     field_name='postCategory',
+    #     lookup_expr='icontains',
+    # )
+
     class Meta:
         model = Post
         fields = {
             'title': ['icontains'],
-            'postCategory': ['icontains'],
+            'postCategory': ['exact'],
         }
