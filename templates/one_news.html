@@ -2,7 +2,7 @@
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% load custom_tags %}
 {% block title %}
-    News {{ one_news.pk }} <!-- Заголовок с номером новости -->
+    News {{ one_news.pk }}
 {% endblock title %}
 
 {% block menu %}
@@ -18,4 +18,5 @@
     <!-- Время и дата создания новости. Время, чтобы было видно, что работает сортировка, а то все новости в один день -->
     <h4>Рейтинг: </h4>{{ one_news.rating }}</br>
     <h4>Категория: </h4>{{ one_news.get_categoryType_display }}</br>  <!-- Выводим человеческое значение -->
+
 {% endblock content %}
