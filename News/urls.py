@@ -16,10 +16,16 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import PostList, PostDetail
+from .views import PostList, PostDetail, NewsCreate
 
 urlpatterns = [
-    path('', PostList.as_view()),
+    path('', PostList.as_view(), name='posts_list'),
     path('<int:pk>', PostDetail.as_view()),
     path('search/', PostList.as_view()),
+    path('create/', NewsCreate.as_view(), name='news_create'),
+    #     path('<int:pk>/edit/',
+    #     path('<int:pk>/delete/',
+    # /articles/create/
+    # /articles/<int:pk>/edit/
+    # /articles/<int:pk>/delete/
 ]

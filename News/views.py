@@ -1,6 +1,8 @@
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
 from .filters import NewsFilter
+from .forms import NewsForm
 from .models import Post
 
 
@@ -20,6 +22,13 @@ class PostList(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+
+
+class NewsCreate(CreateView):
+    form_class = NewsForm
+    model = Post
+    template_name = 'news_edit.html'
+    success_url = reverse_lazy('posts_list')
 
 
 class PostDetail(DetailView):
