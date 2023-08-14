@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from .filters import NewsFilter
-from .forms import NewsForm
+from .forms import NewsForm, ArticleForm
 from .models import Post
 
 
@@ -27,6 +27,7 @@ class PostList(ListView):
 class NewsCreate(CreateView):
     form_class = NewsForm
     model = Post
+    # model = Post.CATEGORY_CHOICES(choices='NEWS')
     template_name = 'news_edit.html'
     success_url = reverse_lazy('posts_list')
 
@@ -48,3 +49,23 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'one_news.html'
     context_object_name = 'one_news'
+
+
+class ArticleCreate(CreateView):
+    form_class = ArticleForm
+    model = Post
+    template_name = 'news_edit.html'
+    success_url = reverse_lazy('posts_list')
+
+
+class ArticleUpdate(UpdateView):
+    form_class = ArticleForm
+    model = Post
+    template_name = 'news_edit.html'
+    success_url = reverse_lazy('posts_list')
+
+
+class ArticleDelete(DeleteView):
+    model = Post
+    template_name = 'news_delete.html'
+    success_url = reverse_lazy('posts_list')
