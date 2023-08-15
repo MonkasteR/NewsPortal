@@ -25,16 +25,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/admin/">Admin</a>
-                        </li> <!-- Ссылочка на админку для удобства -->
-                        <li class="nav-item"><a class="nav-link" href="/news/create/">Create</a></li>
-                        <!-- Ссылка на список новостей -->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="/news/create/">Create News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/articles/create/">Create Articles</a></li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                                data-bs-toggle="dropdown" aria-expanded="false">Новости</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 {% for one_news in news_for_header %}     <!-- Цикл для генерации списка новостей -->
                                     <li><a class="dropdown-item" href="/news/{{ one_news.pk }}">{{ one_news.title }}</a>
-                                    </li> <!-- Работает только на всех сстраничках -->
+                                    </li> <!-- Работает на всех страничках -->
                                 {% endfor %}
                             </ul>
                         </li>
