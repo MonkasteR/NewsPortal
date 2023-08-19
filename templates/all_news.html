@@ -2,57 +2,68 @@
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% load custom_tags %}
 {% block title %}
-    Новости
+	Новости
 {% endblock title %}
 
 {% block content %}
-    <h1>Все новости</h1>
-    <hr>
-    <form action="" method="get">
-        {{ filterset.form.as_p }}
-        <input type="submit" value="Найти"/>
-    </form>
-    {% if all_news %}
-        <table>
-            <tr>
-                <td style="text-align: center;">Заголовок</td>
-                <td style="text-align: center; width: 300px;">Дата публикации</td>
-                <td style="width: 300px;">Краткое содержание</td>
-            </tr>
+	<h1>Все новости</h1>
+	<hr>
+	<form action="" method="get">
+		{{ filterset.form.as_p }}
+		<input type="submit" value="Найти"/>
+	</form>
+	{% if all_news %}
+		<table>
+			<tr>
+				<td style="text-align: center;">Заголовок</td>
+				<td style="text-align: center; width: 300px;">Дата публикации</td>
+				<td style="width: 300px;">Краткое содержание</td>
+				{% if perms.newsportal.change_post or perms.newsportal.delete_post %}
+					<td>Действия</td>
+				{% endif %}
+			</tr>
 
-            {% for one_news in all_news %}
-                <tr>
-                    <td><a href="/news/{{ one_news.pk }}">{{ one_news.title|censorship }}</td>
-                    <!-- Цензура заголовков -->
-                    <td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'d.m.Y' }}</td>
-                    <!-- Отображаем дату у каждой новости день. месяц.год-->
-                    <td style="width: 300px;"><a
-                            href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>
-                    <!-- Цензура текста новостей -->
-                </tr>
-            {% endfor %}
+			{% for one_news in all_news %}
+				<tr>
+					<td><a href="/news/{{ one_news.pk }}">{{ one_news.title|censorship }}</td>
+					<!-- Цензура заголовков -->
+					<td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'d.m.Y' }}</td>
+					<!-- Отображаем дату у каждой новости день. месяц.год-->
+					<td style="width: 300px;"><a
+						href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>
+					<!-- Цензура текста новостей -->
+					<td>
+						{% if perms.newsportal.change_post %}
+							<a href="{% url 'news_update' pk=one_news.pk %}">Изменить</a>
+						{% endif %}
+						{% if perms.newsportal.delete_post %}
+							<a href="{% url 'news_delete' one_news.pk %}">Удалить</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
 
-        </table>
-    {% else %}
-        <h2>Новостей нет!</h2> <!-- Если новостей нет, так и напишем -->
-    {% endif %}
+		</table>
+	{% else %}
+		<h2>Новостей нет!</h2> <!-- Если новостей нет, так и напишем -->
+	{% endif %}
 
-    {% if page_obj.has_previous %}
-        <a href="?{% url_replace page=1 %}">1</a>
-        {% if page_obj.previous_page_number != 1 %}
-            ...
-            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
-        {% endif %}
-    {% endif %}
+	{% if page_obj.has_previous %}
+		<a href="?{% url_replace page=1 %}">1</a>
+		{% if page_obj.previous_page_number != 1 %}
+			...
+			<a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+		{% endif %}
+	{% endif %}
 
-    {{ page_obj.number }}
+	{{ page_obj.number }}
 
-    {% if page_obj.has_next %}
-        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
-        {% if paginator.num_pages != page_obj.next_page_number %}
-            ...
-            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
-        {% endif %}
-    {% endif %}
+	{% if page_obj.has_next %}
+		<a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+		{% if paginator.num_pages != page_obj.next_page_number %}
+			...
+			<a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+		{% endif %}
+	{% endif %}
 
 {% endblock content %}
