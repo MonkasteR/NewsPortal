@@ -29,9 +29,9 @@
 				{% if user.is_authenticated %}
 					<li class="nav-item"><a class="nav-link" href="/accounts/logout/">LogOut</a></li>{% else %}
 					<li class="nav-item"><a class="nav-link" href="/accounts/login/">LogIn</a></li>{% endif %}
-				{% if perms.news.add_post %}
+				{% if perms.News.add_post %}
 					<li class="nav-item"><a class="nav-link" href="/news/create/">Create News</a></li>{% endif %}
-				{% if perms.news.add_post %}
+				{% if perms.News.add_post %}
 					<li class="nav-item"><a class="nav-link" href="/articles/create/">Create Articles</a></li>{% endif %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"

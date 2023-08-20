@@ -13,7 +13,7 @@
 		<input type="submit" value="Найти"/>
 	</form>
 
-	{% if perms.news.add_post %}
+	{% if perms.News.add_post %}
 		<br/>
 		<a href="{% url 'news_create' %}">Добавить новость</a>
 	{% endif %}
@@ -25,7 +25,7 @@
 				<td style="text-align: center;">Заголовок</td>
 				<td style="text-align: center; width: 300px;">Дата публикации</td>
 				<td style="width: 300px;">Краткое содержание</td>
-				{% if perms.news.change_post or perms.news.delete_post %}
+				{% if perms.News.change_post or perms.News.delete_post %}
 					<td>Действия</td>
 				{% endif %}
 			</tr>
@@ -40,10 +40,10 @@
 						href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>
 					<!-- Цензура текста новостей -->
 					<td>
-						{% if perms.news.change_post %}
+						{% if perms.News.change_post %}
 							<a href="{% url 'news_update' pk=one_news.pk %}">Изменить</a>
 						{% endif %}
-						{% if perms.news.delete_post %}
+						{% if perms.News.delete_post %}
 							<a href="{% url 'news_delete' one_news.pk %}">Удалить</a>
 						{% endif %}
 					</td>
