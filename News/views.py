@@ -26,7 +26,7 @@ class PostList(ListView):
 
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
-    permission_required = ('newsportal.add_post',)
+    permission_required = ('news.add_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -39,7 +39,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = ('newsportal.change_post',)
+    permission_required = ('news.change_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -47,7 +47,7 @@ class NewsUpdate(PermissionRequiredMixin, UpdateView):
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = ('newsportal.delete_post',)
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('posts_list')
@@ -60,7 +60,7 @@ class PostDetail(DetailView):
 
 
 class ArticleCreate(PermissionRequiredMixin, CreateView):
-    permission_required = ('newsportal.add_post',)
+    permission_required = ('news.add_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -73,7 +73,7 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
 
 
 class ArticleUpdate(PermissionRequiredMixin, UpdateView):
-    permission_required = ('newsportal.change_post',)
+    permission_required = ('news.change_post',)
     form_class = NewsForm
     model = Post
     template_name = 'news_edit.html'
@@ -81,7 +81,7 @@ class ArticleUpdate(PermissionRequiredMixin, UpdateView):
 
 
 class ArticleDelete(PermissionRequiredMixin, DeleteView):
-    permission_required = ('newsportal.delete_post',)
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('posts_list')

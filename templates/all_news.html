@@ -13,7 +13,7 @@
 		<input type="submit" value="Найти"/>
 	</form>
 
-	{% if perms.newsportal.add_post %}
+	{% if perms.news.add_post %}
 		<br/>
 		<a href="{% url 'news_create' %}">Добавить новость</a>
 	{% endif %}
@@ -25,7 +25,7 @@
 				<td style="text-align: center;">Заголовок</td>
 				<td style="text-align: center; width: 300px;">Дата публикации</td>
 				<td style="width: 300px;">Краткое содержание</td>
-				{% if perms.newsportal.change_post or perms.newsportal.delete_post %}
+				{% if perms.news.change_post or perms.news.delete_post %}
 					<td>Действия</td>
 				{% endif %}
 			</tr>
@@ -35,15 +35,15 @@
 					<td><a href="/news/{{ one_news.pk }}">{{ one_news.title|censorship }}</td>
 					<!-- Цензура заголовков -->
 					<td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'d.m.Y' }}</td>
-					<!-- Отображаем дату у каждой новости день. месяц.год-->
+					<!-- Отображаем дату у каждой новости день. месяц. год-->
 					<td style="width: 300px;"><a
 						href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>
 					<!-- Цензура текста новостей -->
 					<td>
-						{% if perms.newsportal.change_post %}
+						{% if perms.news.change_post %}
 							<a href="{% url 'news_update' pk=one_news.pk %}">Изменить</a>
 						{% endif %}
-						{% if perms.newsportal.delete_post %}
+						{% if perms.news.delete_post %}
 							<a href="{% url 'news_delete' one_news.pk %}">Удалить</a>
 						{% endif %}
 					</td>
