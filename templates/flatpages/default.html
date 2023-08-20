@@ -26,7 +26,9 @@
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="/admin/">Admin</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="/accounts/login/">LogIn</a></li>
+				{% if user.is_authenticated %}
+					<li class="nav-item"><a class="nav-link" href="/accounts/logout/">LogOut</a></li>{% else %}
+					<li class="nav-item"><a class="nav-link" href="/accounts/login/">LogIn</a></li>{% endif %}
 				{% if perms.news.add_post %}
 					<li class="nav-item"><a class="nav-link" href="/news/create/">Create News</a></li>{% endif %}
 				{% if perms.news.add_post %}
