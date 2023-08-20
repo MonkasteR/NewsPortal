@@ -12,7 +12,14 @@
 		{{ filterset.form.as_p }}
 		<input type="submit" value="Найти"/>
 	</form>
+
+	{% if perms.newsportal.add_post %}
+		<br/>
+		<a href="{% url 'news_create' %}">Добавить новость</a>
+	{% endif %}
+
 	{% if all_news %}
+		<br/>
 		<table>
 			<tr>
 				<td style="text-align: center;">Заголовок</td>

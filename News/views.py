@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
@@ -9,7 +9,7 @@ from .models import Post
 
 class PostList(ListView):
     model = Post
-    ordering = '-dateCreation'  # сортируем по убыванию даты, сначала самая свежая новость, далее по убыванию
+    ordering = '-dateCreation'
     template_name = 'all_news.html'
     context_object_name = 'all_news'
     paginate_by = 10
@@ -25,7 +25,7 @@ class PostList(ListView):
         return context
 
 
-class NewsCreate(LoginRequiredMixin, CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('newsportal.add_post',)
     form_class = NewsForm
     model = Post
@@ -38,7 +38,7 @@ class NewsCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class NewsUpdate(LoginRequiredMixin, UpdateView):
+class NewsUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('newsportal.change_post',)
     form_class = NewsForm
     model = Post
@@ -46,7 +46,7 @@ class NewsUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('posts_list')
 
 
-class NewsDelete(LoginRequiredMixin, DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('newsportal.delete_post',)
     model = Post
     template_name = 'news_delete.html'
@@ -59,7 +59,7 @@ class PostDetail(DetailView):
     context_object_name = 'one_news'
 
 
-class ArticleCreate(LoginRequiredMixin, CreateView):
+class ArticleCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('newsportal.add_post',)
     form_class = NewsForm
     model = Post
@@ -72,7 +72,7 @@ class ArticleCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ArticleUpdate(LoginRequiredMixin, UpdateView):
+class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('newsportal.change_post',)
     form_class = NewsForm
     model = Post
@@ -80,7 +80,7 @@ class ArticleUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('posts_list')
 
 
-class ArticleDelete(LoginRequiredMixin, DeleteView):
+class ArticleDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('newsportal.delete_post',)
     model = Post
     template_name = 'news_delete.html'

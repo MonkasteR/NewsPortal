@@ -10,5 +10,4 @@ def news_for_header(request):
 def news_pk(request):
     return {
         'news_pk': Post.objects.get(pk=request)
-        # 'news_pk': Post.objects.get(pk=request.form.get('pk'))
     }
