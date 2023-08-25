@@ -39,3 +39,7 @@ $RECYCLE.BIN/
 .env
 env/
 .mypy_cache/
+venv/
+ENV/
+env.bak/
+venv.bak/
