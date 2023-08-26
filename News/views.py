@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from .filters import NewsFilter
 from .forms import NewsForm
-from .models import Post
+from .models import Post, Category
 
 
 class PostList(ListView):
@@ -85,3 +86,27 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('posts_list')
+
+
+class CategoryListView(ListView):
+    model = Post
+    template_name = 'category_list.html'
+    context_object_name = 'category_news_list'
+
+    # ordering = '-dateCreation'
+    # paginate_by = 10
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(categoryType=self.category).order_by('-dateCreation')
+        return queryset
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     self.filterset = NewsFilter(self.request.GET, queryset)
+    #     return self.filterset.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
