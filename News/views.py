@@ -1,10 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from .filters import NewsFilter
 from .forms import NewsForm
-from .models import Post
+from .models import Post, Category
 
 
 class PostList(ListView):
@@ -85,3 +88,18 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('posts_list')
+
+
+class SubscriptionView(View):
+    def get(self, request):
+        return render(request, 'subscriptions.html')
+
+    @login_required
+    def subscriptions(request):
+        user_email = request.user.email
+        categories = Category.objects.all()
+        context = {
+            'user_email': user_email,
+            'categories': categories
+        }
+        return render(request, 'subscriptions.html', context)
