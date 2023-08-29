@@ -1,17 +1,8 @@
-from django.contrib.auth import get_user
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
 from django.db import models
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.template.loader import render_to_string
 from django.urls import reverse
-
-import News
-from NewsPortal.settings import DEFAULT_FROM_EMAIL
 
 
 class Author(models.Model):
@@ -88,22 +79,6 @@ class Post(models.Model):
         verbose_name = 'Публикация'
         verbose_name_plural = 'Публикации'
 
-    @login_required
-    @receiver(post_save, sender=News)
-    def send_news_notification(sender, instance, **kwargs):
-        subject = "Новая новость: {}".format(instance.title)
-        message = render_to_string('news_notification_email.html', {'news': instance})
-        user = get_user()
-        from_email = DEFAULT_FROM_EMAIL
-        subscribers = Subscriber.objects.all()
-
-        for subscriber in subscribers:
-            to_email = subscriber.email
-            link = reverse('one_news', args='one_news.pk')  # Замените на свой URL для просмотра новости
-            message += f"\nЧтобы прочитать новость, перейдите по ссылке: {link}"
-
-            send_mail(subject, message, from_email, [to_email])
-
 
 class Comment(models.Model):
     commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -136,7 +111,12 @@ class PostCategory(models.Model):
 class Subscriber(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subscriptions')
-    email = models.EmailField(unique=True)
+
+    # email = models.EmailField()
 
     def __str__(self):
-        return self.email
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Подписчик'
+        verbose_name_plural = 'Подписчики'

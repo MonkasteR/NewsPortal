@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from .filters import NewsFilter
 from .forms import NewsForm
 from .models import Post, Category, Subscriber
+from .signals import send_news_notification
 
 
 class PostList(ListView):
@@ -41,6 +42,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = Post.NEWS
+        send_news_notification(self.request, self.object)
         return super().form_valid(form)
 
 
