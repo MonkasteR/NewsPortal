@@ -104,6 +104,7 @@ class Post(models.Model):
 
             send_mail(subject, message, from_email, [to_email])
 
+
 class Comment(models.Model):
     commentPost = models.ForeignKey(Post, on_delete=models.CASCADE)
     commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -133,8 +134,8 @@ class PostCategory(models.Model):
 
 
 class Subscriber(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subscriptions')
     email = models.EmailField(unique=True)
 
     def __str__(self):

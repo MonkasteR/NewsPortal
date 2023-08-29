@@ -1,14 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models import Exists, OuterRef
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from .filters import NewsFilter
 from .forms import NewsForm
-from .models import Post, Category
+from .models import Post, Category, Subscriber
 
 
 class PostList(ListView):
@@ -128,3 +130,34 @@ class CategoryListView(ListView):
         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
         context['category'] = self.category
         return context
+
+
+@login_required
+@csrf_protect
+def subscriptions(request):
+    if request.method == 'POST':
+        category_id = request.POST.get('category_id')
+        category = Category.objects.get(id=category_id)
+        action = request.POST.get('action')
+
+        if action == 'subscribe':
+            Subscriber.objects.create(user=request.user, category=category)
+        elif action == 'unsubscribe':
+            Subscriber.objects.filter(
+                user=request.user,
+                category=category,
+            ).delete()
+
+    categories_with_subscriptions = Category.objects.annotate(
+        user_subscribed=Exists(
+            Subscriber.objects.filter(
+                user=request.user,
+                category=OuterRef('pk'),
+            )
+        )
+    ).order_by('name')
+    return render(
+        request,
+        'subscriptions.html',
+        {'categories': categories_with_subscriptions},
+    )

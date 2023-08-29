@@ -5,19 +5,23 @@
 {% endblock title %}
 
 {% block content %}
-	<h2>Текущий email пользователя: {{ user.email }}</h2>
+	<h4>Еmail пользователя: {{ user.email }}</h4>
 
-	<h4>Категории новостей для подписки:</h4>
-	<ul>
-		{% for category in categories %}
-			<li>
-				{{ category.name }}
-				<form method="post" action="{% url 'subscribe' category.pk %}">
-					{% csrf_token %}
-					<button type="submit">Подписаться</button>
-				</form>
-			</li>
-		{% endfor %}
-	</ul>
+	{% for category in categories %}
+		<p>
+			{{ category.name }}
+		<form method="post">
+			{% csrf_token %}
+			<input type="hidden" name="category_id" value="{{ category.id }}"/>
+
+			{% if category.user_subscribed %}
+				<button disabled>Подписаться</button>
+				<button name="action" value="unsubscribe">Отписаться</button>
+			{% else %}
+				<button name="action" value="subscribe">Подписаться</button>
+				<button disabled>Отписаться</button>
+			{% endif %}
+		</form>
+		</p>
+	{% endfor %}
 {% endblock content %}
-
