@@ -2,77 +2,45 @@
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% load custom_tags %}
 {% block title %}
-	Новости
+	Категории новостей
 {% endblock title %}
 
 {% block content %}
-	<h1>Все новости</h1>
+	<h1>Все категории</h1>
 	<hr>
-	<form action="" method="get">
-		{{ filterset.form.as_p }}
-		<input type="submit" value="Найти"/>
-	</form>
+
 	{% if is_not_subscribed %}
-		<p class="text-center"><a href="{}" class="btn btn-secondary btn-sn">Подписаться</a></p>
+		<p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sn">Подписаться</a></p>
 	{% endif %}
-	{% if perms.News.add_post %}
-		<br/>
-		<a href="{% url 'news_create' %}">Добавить новость</a>
-	{% endif %}
+	<ul class="list-group list-group-flush">
+		{% for one_news in category_news_list %}
+			<li class="list-group-item">
+			<small class="fw-bold">{{ one_news.dateCreation|date:'d.m.Y' }}</small>
+			<a href="{% url 'one_news' one_news.id %}">{{ one_news.title }}</a>
+			<small class="text-muted">(автор: {{ one_news.author }})</small><br>
+			<small class="fw-bold">категории:
+				{% for category in one_news.category.all %}
+					<a href="{% url 'category_list' category.pk %}">{{ category }}
+				{% endfor %}
+			</small>
+		{% endfor %}
 
-	{% if all_news %}
-		<br/>
-		<table>
-			<tr>
-				<td style="text-align: center;">Заголовок</td>
-				<td style="text-align: center; width: 300px;">Дата публикации</td>
-				<td style="width: 300px;">Краткое содержание</td>
-				{% if perms.News.change_post or perms.News.delete_post %}
-					<td>Действия</td>
-				{% endif %}
-			</tr>
-
-			{% for one_news in category_news_list %}
-				<tr>
-					<td><a href="/news/{{ one_news.pk }}">{{ one_news.title|censorship }}</td>
-					<!-- Цензура заголовков -->
-					<td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'d.m.Y' }}</td>
-					<!-- Отображаем дату у каждой новости день. месяц. год-->
-					<td style="width: 300px;"><a
-						href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>
-					<!-- Цензура текста новостей -->
-					<td>
-						{% if perms.News.change_post %}
-							<a href="{% url 'news_update' pk=one_news.pk %}">Изменить</a>
-						{% endif %}
-						{% if perms.News.delete_post %}
-							<a href="{% url 'news_delete' one_news.pk %}">Удалить</a>
-						{% endif %}
-					</td>
-				</tr>
-			{% endfor %}
-
-		</table>
-	{% else %}
-		<h2>Новостей нет!</h2> <!-- Если новостей нет, так и напишем -->
-	{% endif %}
-
-	{% if page_obj.has_previous %}
-		<a href="?{% url_replace page=1 %}">1</a>
-		{% if page_obj.previous_page_number != 1 %}
-			...
-			<a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+		{% if page_obj.has_previous %}
+			<a href="?{% url_replace page=1 %}">1</a>
+			{% if page_obj.previous_page_number != 1 %}
+				...
+				<a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+			{% endif %}
 		{% endif %}
-	{% endif %}
 
-	{{ page_obj.number }}
+		{{ page_obj.number }}
 
-	{% if page_obj.has_next %}
-		<a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
-		{% if paginator.num_pages != page_obj.next_page_number %}
-			...
-			<a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+		{% if page_obj.has_next %}
+			<a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+			{% if paginator.num_pages != page_obj.next_page_number %}
+				...
+				<a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+			{% endif %}
 		{% endif %}
-	{% endif %}
 
 {% endblock content %}

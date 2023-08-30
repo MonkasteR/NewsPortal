@@ -42,7 +42,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         post.categoryType = Post.NEWS
-        send_news_notification(self.request, self.object)
+        # send_news_notification(self.request, self.object)
         return super().form_valid(form)
 
 
@@ -122,11 +122,6 @@ class CategoryListView(ListView):
         queryset = Post.objects.filter(categoryType=self.category).order_by('-dateCreation')
         return queryset
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     self.filterset = NewsFilter(self.request.GET, queryset)
-    #     return self.filterset.qs
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
@@ -163,3 +158,11 @@ def subscriptions(request):
         'subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+    message = f'Вы успешно подписались на категорию {category}'
+    return render(request, 'subscribe.html', {'category': category, 'message': message})

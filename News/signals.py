@@ -24,3 +24,13 @@ def send_news_notification(sender, instance=None, **kwargs):
             link = reverse('one_news', args=[instance.pk])
             message += f"\nЧтобы прочитать новость, перейдите по ссылке: {link}\n"  # TODO: зацикливается подпись
             send_mail(subject, message, from_email, [to_email])
+# @receiver(post_save, sender=Post)
+# def send_news_notification(sender, instance=None, **kwargs):
+#     print(f'{instance.title = }')
+#     print(f'{instance.text = }')
+#     print(f'{instance.pk = }')
+#     print(f'{instance.author = }')
+#     print(f'{instance.postCategory = }')
+#     print(f'{instance.dateCreation = }')
+#     print(f'{instance.rating = }')
+#     print(f'{instance.categoryType = }')
