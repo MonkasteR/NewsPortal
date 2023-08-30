@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Уведомление о новостях</title>
+</head>
+<body>
+<h2>Новые статьи за последнюю неделю!</h2>
+<ul>
+	{% for post in posts %}
+		<li><a href="{{ link }}{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+	{% endfor %}
+</ul>
+
+
+</body>
+</html>
