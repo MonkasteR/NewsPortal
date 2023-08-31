@@ -3,7 +3,6 @@ from django.core.mail import send_mail, EmailMultiAlternatives
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.template.loader import get_template, render_to_string
-from django.urls import reverse
 
 from News.models import Subscriber, Post
 from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
@@ -14,14 +13,12 @@ from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 def send_news_notification(sender, instance=None, **kwargs):
     if instance is not None:
         subject = f"Новая новость: {instance.title}"
-        message = get_template('news_notification_email.html').render({'news': instance})
+        message = get_template('news_notification_email.html').render({'news': instance, 'SITE_URL': SITE_URL})
         from_email = DEFAULT_FROM_EMAIL
         subscribers = Subscriber.objects.all()
         for subscriber in subscribers:
             to_email = subscriber.user.email
-            link = reverse('one_news', args=[instance.pk])
-            message_body = f"{message}\nЧтобы прочитать новость, перейдите по ссылке: {SITE_URL}{link}"
-            send_mail(subject, message_body, from_email, [to_email])
+            send_mail(subject, message, from_email, [to_email])
 
 
 def send_notifications(preview, pk, title, subscribers):

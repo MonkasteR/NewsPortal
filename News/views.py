@@ -11,7 +11,6 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from .filters import NewsFilter
 from .forms import NewsForm
 from .models import Post, Category, Subscriber
-from .signals import send_news_notification
 
 
 class PostList(ListView):
@@ -144,7 +143,7 @@ def subscriptions(request):
                 user=request.user,
                 category=category,
             ).delete()
-
+    # raise Exception(dict(request))
     categories_with_subscriptions = Category.objects.annotate(
         user_subscribed=Exists(
             Subscriber.objects.filter(

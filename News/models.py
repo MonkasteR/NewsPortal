@@ -113,7 +113,7 @@ class Subscriber(models.Model):
     # email = models.EmailField()
 
     def __str__(self):
-        return self.user.email
+        return str(self.user)
 
     class Meta:
         verbose_name = 'Подписчик'
