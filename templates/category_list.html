@@ -6,11 +6,10 @@
 {% endblock title %}
 
 {% block content %}
-	<h1>Все категории</h1>
-	<hr>
 
 	{% if is_not_subscribed %}
-		<p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sn">Подписаться</a></p>
+		<p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sn">Подписаться</a>
+		</p>
 	{% endif %}
 	<ul class="list-group list-group-flush">
 		{% for one_news in category_news_list %}

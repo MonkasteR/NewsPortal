@@ -15,27 +15,15 @@ def send_news_notification(sender, instance=None, **kwargs):
     if instance is not None:
         subject = "Новая новость: " + instance.title
         message = get_template('news_notification_email.html').render({'news': instance})
-        context = {'news': {'title': {instance.title},
-                            'content': {instance.text}}}  # TODO: заголовок передается, а тело письма нет
         from_email = DEFAULT_FROM_EMAIL
         subscribers = Subscriber.objects.all()
         for subscriber in subscribers:
             to_email = subscriber.user.email
             link = reverse('one_news', args=[instance.pk])
-            message += f"\nЧтобы прочитать новость, перейдите по ссылке: {link}\n"  # TODO: зацикливается подпись
-            send_mail(subject, message, from_email, [to_email])
+            message_body = f"{message}\nЧтобы прочитать новость, перейдите по ссылке: {SITE_URL}{link}"
+            send_mail(subject, message_body, from_email, [to_email])
 
 
-# @receiver(post_save, sender=Post)
-# def send_news_notification(sender, instance=None, **kwargs):
-#     print(f'{instance.title = }')
-#     print(f'{instance.text = }')
-#     print(f'{instance.pk = }')
-#     print(f'{instance.author = }')
-#     print(f'{instance.postCategory = }')
-#     print(f'{instance.dateCreation = }')
-#     print(f'{instance.rating = }')
-#     print(f'{instance.categoryType = }')
 def send_notifications(preview, pk, title, subscribers):
     html_content = render_to_string(
         'post_created_email.html',
