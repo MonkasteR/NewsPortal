@@ -6,4 +6,8 @@ class NewsConfig(AppConfig):
     name = 'News'
 
     def ready(self):
-        pass
+        """
+        Инициализирует объект и импортирует необходимые сигналы для модуля News.
+        """
+        # noinspection PyUnresolvedReferences
+        import News.signals
