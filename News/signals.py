@@ -36,6 +36,7 @@ def send_notifications(preview, pk, title, subscribers):
         to=subscribers,
     )
     msg.attach_alternative(html_content, 'text/html')
+    msg.encoding = 'utf-8'
     msg.send()
 
 

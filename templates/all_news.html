@@ -15,7 +15,7 @@
 
 	{% if perms.News.add_post %}
 		<br/>
-		<a href="{% url 'news_create' %}">Добавить новость</a>
+		<button onclick="window.location.href='{% url 'news_create' %}'">Добавить новость</button>
 	{% endif %}
 
 	{% if all_news %}
@@ -41,10 +41,10 @@
 					<!-- Цензура текста новостей -->
 					<td>
 						{% if perms.News.change_post %}
-							<a href="{% url 'news_update' pk=one_news.pk %}">Изменить</a>
+							<button onclick="window.location.href='{% url 'news_update' pk=one_news.pk %}'">Изменить</button>
 						{% endif %}
 						{% if perms.News.delete_post %}
-							<a href="{% url 'news_delete' one_news.pk %}">Удалить</a>
+							<button onclick="window.location.href='{% url 'news_delete' one_news.pk %}'">Удалить</button>
 						{% endif %}
 					</td>
 				</tr>
