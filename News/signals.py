@@ -13,7 +13,7 @@ from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 @receiver(post_save, sender=Post)
 def send_news_notification(sender, instance=None, **kwargs):
     if instance is not None:
-        subject = "Новая новость: " + instance.title
+        subject = f"Новая новость: {instance.title}"
         message = get_template('news_notification_email.html').render({'news': instance})
         from_email = DEFAULT_FROM_EMAIL
         subscribers = Subscriber.objects.all()
@@ -46,8 +46,5 @@ def send_notifications(preview, pk, title, subscribers):
 def notify_about_new_post(sender, instance=None, **kwargs):
     if kwargs['action'] == 'post_add':
         categories = instance.postCategory.all()
-        subscribers: list[str] = []
-        for category in categories:
-            subscribers += category.subscribers.all()
-        subscribers = [s.email for s in subscribers]
+        subscribers = [s.email for category in categories for s in category.subscribers.all()]
         send_notifications(instance.preview(), instance.pk, instance.title, subscribers)
