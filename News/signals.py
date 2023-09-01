@@ -13,7 +13,7 @@ from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 def send_news_notification(sender, instance=None, **kwargs):
     if instance is not None:
         subject = f"Новая новость: {instance.title}"
-        message = get_template('news_notification_email.html').render({'news': instance, 'SITE_URL': SITE_URL})
+        message = get_template('email/news_notification_email.html').render({'news': instance, 'SITE_URL': SITE_URL})
         from_email = DEFAULT_FROM_EMAIL
         subscribers = Subscriber.objects.all()
         for subscriber in subscribers:
@@ -23,7 +23,7 @@ def send_news_notification(sender, instance=None, **kwargs):
 
 def send_notifications(preview, pk, title, subscribers):
     html_content = render_to_string(
-        'post_created_email.html',
+        'email/post_created_email.html',
         {
             'text': preview,
             'link': f'{SITE_URL}/news/{pk}',

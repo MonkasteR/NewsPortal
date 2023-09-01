@@ -16,7 +16,7 @@ from .models import Post, Category, Subscriber
 class PostList(ListView):
     model = Post
     ordering = '-dateCreation'
-    template_name = 'all_news.html'
+    template_name = 'news/all_news.html'
     context_object_name = 'all_news'
     paginate_by = 10
 
@@ -35,7 +35,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('News.add_post',)
     form_class = NewsForm
     model = Post
-    template_name = 'news_edit.html'
+    template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
 
     def form_valid(self, form):
@@ -49,20 +49,20 @@ class NewsUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('News.change_post',)
     form_class = NewsForm
     model = Post
-    template_name = 'news_edit.html'
+    template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('News.delete_post',)
     model = Post
-    template_name = 'news_delete.html'
+    template_name = 'news/news_delete.html'
     success_url = reverse_lazy('posts_list')
 
 
 class PostDetail(DetailView):
     model = Post
-    template_name = 'one_news.html'
+    template_name = 'news/one_news.html'
     context_object_name = 'one_news'
 
 
@@ -70,7 +70,7 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('News.add_post',)
     form_class = NewsForm
     model = Post
-    template_name = 'news_edit.html'
+    template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
 
     def form_valid(self, form):
@@ -83,20 +83,20 @@ class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = ('News.change_post',)
     form_class = NewsForm
     model = Post
-    template_name = 'news_edit.html'
+    template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
 
 
 class ArticleDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('News.delete_post',)
     model = Post
-    template_name = 'news_delete.html'
+    template_name = 'news/news_delete.html'
     success_url = reverse_lazy('posts_list')
 
 
 class SubscriptionView(View):
     def get(self, request):
-        return render(request, 'subscriptions.html')
+        return render(request, 'news/subscriptions.html')
 
     @login_required
     def subscriptions(request):
@@ -106,7 +106,7 @@ class SubscriptionView(View):
             'user_email': user_email,
             'categories': categories
         }
-        return render(request, 'subscriptions.html', context)
+        return render(request, 'news/subscriptions.html', context)
 
 
 class CategoryListView(ListView):
@@ -154,7 +154,7 @@ def subscriptions(request):
     ).order_by('name')
     return render(
         request,
-        'subscriptions.html',
+        'news/subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
 
