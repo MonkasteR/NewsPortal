@@ -9,12 +9,15 @@ Category.objects.create(name='Space')  # Создаем
 Category.objects.create(name='IT')  # категории
 Category.objects.create(name='Sport')  # для
 Category.objects.create(name='Policy')  # новостей
-Post.objects.create(author_id=1, title='Заголовок новости 1', text='Текст новости 1, про непонятно что', categoryType='AR')
+Post.objects.create(author_id=1, title='Заголовок новости 1', text='Текст новости 1, про непонятно что',
+                    categoryType='AR')
 Post.objects.create(author_id=2, title='Заголовок новости 2', text='Текст новости 2, про IT', categoryType='AR')
 Post.objects.create(author_id=2, title='Заголовок новости 3', text='Текст новости 3, про Sport', categoryType='NW')
 Post.objects.create(author_id=1, title='Заголовок новости 4', text='Текст новости 4, Футбол ', categoryType='NW')
-Post.objects.create(author_id=1, title='Заголовок новости 5', text='Текст новости 5, Космос. Найдена Raxxla ', categoryType='NW')
-Post.objects.create(author_id=1, title='Заголовок новости 6', text='Текст новости 6, Космос. Таргоиды атакуют мирное население ', categoryType='AR')
+Post.objects.create(author_id=1, title='Заголовок новости 5', text='Текст новости 5, Космос. Найдена Raxxla ',
+                    categoryType='NW')
+Post.objects.create(author_id=1, title='Заголовок новости 6',
+                    text='Текст новости 6, Космос. Таргоиды атакуют мирное население ', categoryType='AR')
 post1 = Post.objects.get(pk=1)
 post2 = Post.objects.get(pk=2)
 post3 = Post.objects.get(pk=3)
@@ -38,9 +41,12 @@ Comment.objects.create(commentUser=user2, commentPost=post5, text='Пора от
 Comment.objects.create(commentUser=user3, commentPost=post6, text='А вы с ними еще в футбол играть хотели')
 Comment.objects.create(commentUser=user1, commentPost=post6, text='Все не так однозначно, они просто так видят мир')
 Comment.objects.create(commentUser=user2, commentPost=post2, text='Невидимые технологии на страже кавалерии')
-Comment.objects.create(commentUser=user3, commentPost=post2, text='Лошадь не прошла через пакетный фильтр благодаря СОРМ')
-Comment.objects.create(commentUser=user1, commentPost=post3, text='Спортивные ребята как всегда обыграли неспортивных ребят')
-Comment.objects.create(commentUser=user2, commentPost=post3, text='ЗОЖ обман и провокация, занимайтесь НВП и будете здоровы')
+Comment.objects.create(commentUser=user3, commentPost=post2,
+                       text='Лошадь не прошла через пакетный фильтр благодаря СОРМ')
+Comment.objects.create(commentUser=user1, commentPost=post3,
+                       text='Спортивные ребята как всегда обыграли неспортивных ребят')
+Comment.objects.create(commentUser=user2, commentPost=post3,
+                       text='ЗОЖ обман и провокация, занимайтесь НВП и будете здоровы')
 Comment.objects.create(commentUser=user2, commentPost=post4, text='Штанга обыграла вратаря')
 Comment.objects.create(commentUser=user3, commentPost=post4, text='На юге Москвы сгорел склад с огнетушителями')
 comm1 = Comment.objects.get(pk=1)
@@ -57,7 +63,7 @@ comm11 = Comment.objects.get(pk=11)
 
 post1.like()  # Накидать по вкусу в любые посты
 post2.dislike()
-comm1.like() # Накидать по вкусу в любые комменты
+comm1.like()  # Накидать по вкусу в любые комменты
 comm1.dislike()
 
 Comment.objects.get(commentUser=3, commentPost=1).like()
