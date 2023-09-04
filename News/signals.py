@@ -12,11 +12,14 @@ def send_news_notification(sender, instance, **kwargs):
     if kwargs['created']:
         preview = instance.preview
         instance_id = instance.pk
-        title = instance.title
+        # title = instance.title
         subscribers = Subscriber.objects.all()
         to_email = [subscriber.user.email for subscriber in subscribers]
-        print(to_email)
-        send_notifications.delay(preview, instance_id, title, to_email)
+        # print(to_email)
+        # print(preview)
+        # print(instance_id)
+        # print(title)
+        send_notifications.delay(instance_id, to_email)
         # for subscriber in subscribers:
         #     to_email = subscriber.user.email
         #     send_notifications.delay(preview, instance_id, title, [to_email])

@@ -2,6 +2,7 @@ from celery import shared_task
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+from News.models import Post
 from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 
 
@@ -18,7 +19,9 @@ from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 #             send_mail(subject, message, from_email, [to_email])
 
 @shared_task
-def send_notifications(preview, pk, title, to_email):
+def send_notifications(pk, to_email):
+    preview = Post.objects.get(pk=pk).preview
+    title = Post.objects.get(pk=pk).title
     html_content = render_to_string(
         'email/post_created_email.html',
         {
@@ -32,6 +35,11 @@ def send_notifications(preview, pk, title, to_email):
         from_email=DEFAULT_FROM_EMAIL,
         to=to_email,
     )
+    # print(to_email)
+    # print(preview)
+    # print(pk)
+    # print(title)
+    # raise Exception('Мы в таске')
     msg.attach_alternative(html_content, 'text/html')
     msg.encoding = 'utf-8'
     msg.send()
