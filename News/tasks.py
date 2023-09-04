@@ -30,6 +30,7 @@ def send_notifications(pk, to_email):
     msg.send()
 
 
+@shared_task
 def my_task():
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
