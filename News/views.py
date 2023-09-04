@@ -35,7 +35,6 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('News.add_post',)
     form_class = NewsForm
     model = Post
-    # send_notifications.delay(model.pk)
     template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
 
