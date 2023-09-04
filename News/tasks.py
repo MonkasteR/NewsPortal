@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 
 
-@shared_task
+# @shared_task
 # def send_notifications(sender, instance=None, **kwargs):
 #     if instance is not None:
 #         subject = f"Новая новость: {instance.title}"
@@ -18,7 +18,7 @@ from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 #             send_mail(subject, message, from_email, [to_email])
 
 @shared_task
-def send_notifications(preview, pk, title, subscribers):
+def send_notifications(preview, pk, title, to_email):
     html_content = render_to_string(
         'email/post_created_email.html',
         {
@@ -30,7 +30,7 @@ def send_notifications(preview, pk, title, subscribers):
         subject=title,
         body='',
         from_email=DEFAULT_FROM_EMAIL,
-        to=subscribers,
+        to=to_email,
     )
     msg.attach_alternative(html_content, 'text/html')
     msg.encoding = 'utf-8'
