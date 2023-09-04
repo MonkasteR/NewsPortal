@@ -6,18 +6,6 @@ from News.models import Post
 from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 
 
-# @shared_task
-# def send_notifications(sender, instance=None, **kwargs):
-#     if instance is not None:
-#         subject = f"Новая новость: {instance.title}"
-#         message = get_template('email/news_notification_email.html').render({'news': instance, 'SITE_URL': SITE_URL})
-#         from_email = DEFAULT_FROM_EMAIL
-#         subscribers = Subscriber.objects.all()
-#         # post_id = instance.pk
-#         for subscriber in subscribers:
-#             to_email = subscriber.user.email
-#             send_mail(subject, message, from_email, [to_email])
-
 @shared_task
 def send_notifications(pk, to_email):
     preview = Post.objects.get(pk=pk).preview
@@ -35,11 +23,6 @@ def send_notifications(pk, to_email):
         from_email=DEFAULT_FROM_EMAIL,
         to=to_email,
     )
-    # print(to_email)
-    # print(preview)
-    # print(pk)
-    # print(title)
-    # raise Exception('Мы в таске')
     msg.attach_alternative(html_content, 'text/html')
     msg.encoding = 'utf-8'
     msg.send()
