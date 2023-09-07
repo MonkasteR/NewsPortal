@@ -15,6 +15,12 @@ class NewsForm(forms.ModelForm):
             'text',
             'postCategory',
         ]
+        labels = {
+            'author': 'Автор',
+            'title': 'Заголовок',
+            'text': 'Текст',
+            'postCategory': 'Категория',
+        }
 
     def clean(self):
         cleaned_data = super().clean()

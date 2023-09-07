@@ -31,6 +31,7 @@ class PostList(ListView):
         return context
 
 
+
 class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('News.add_post',)
     form_class = NewsForm
@@ -156,6 +157,7 @@ def subscriptions(request):
         'news/subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
+
 
 @login_required
 def subscribe(request, pk):
