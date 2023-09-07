@@ -4,6 +4,15 @@ from django.contrib.auth.models import Group
 
 class CustomSignupForm(SignupForm):
     def save(self, request):
+        """
+        Сохраняет пользователя и добавляет его в группу "users".
+
+        Параметры:
+            request (HttpRequest): Объект HTTP-запроса.
+
+        Возвращает:
+            User: Сохраненный объект пользователя.
+        """
         user = super().save(request)
         users = Group.objects.get(name="users")
         user.groups.add(users)

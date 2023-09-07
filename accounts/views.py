@@ -15,6 +15,15 @@ class SignUp(CreateView):
 
 @login_required
 def test_page(request):
+    """
+    Функция представления, используемая для тестирования страницы.
+
+    Параметры:
+        request (HttpRequest): Объект HTTP-запроса.
+
+    Возвращает:
+        HttpResponse: Объект HTTP-ответа, содержащий имена прав доступа.
+    """
     user_permissions = request.user.get_all_permissions()
     permission_names = list(user_permissions)
 
