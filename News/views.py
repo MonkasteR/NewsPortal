@@ -43,7 +43,6 @@ class PostList(ListView):
         return context
 
 
-
 class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('News.add_post',)
     form_class = NewsForm
@@ -166,10 +165,12 @@ class CategoryListView(ListView):
     # paginate_by = 10
     def get_queryset(self):
         """
-        Получает queryset постов, отфильтрованных по типу категории и отсортированных по дате создания.
+        Получает queryset постов, отфильтрованных по типу категории и
+        отсортированных по дате создания.
 
         Возвращает:
-            queryset: queryset объектов Post, отфильтрованных по типу категории и отсортированных по дате создания.
+            queryset: queryset объектов Post, отфильтрованных по типу категории и
+            отсортированных по дате создания.
         """
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
         queryset = Post.objects.filter(categoryType=self.category).order_by('-dateCreation')
@@ -194,7 +195,8 @@ class CategoryListView(ListView):
 def subscriptions(request):
     """
     Функция представления для управления подписками пользователя.
-    Данная функция декорирована декораторами `@login_required` и `@csrf_protect` для обеспечения доступа только авторизованных пользователей и защиты от атак подделки межсайтовых запросов.
+    Данная функция декорирована декораторами `@login_required` и `@csrf_protect` для обеспечения
+    доступа только авторизованных пользователей и защиты от атак подделки межсайтовых запросов.
 
     Параметры:
         request (HttpRequest): Объект HTTP-запроса.
