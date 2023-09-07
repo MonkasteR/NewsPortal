@@ -9,6 +9,17 @@ from News.tasks import send_notifications
 @login_required
 @receiver(post_save, sender=Post)
 def send_news_notification(sender, instance, **kwargs):
+    """
+    Эта функция является приемником сигнала, который срабатывает после сохранения объекта Post. Она отправляет уведомление всем подписчикам с превью поста.
+
+    Параметры:
+        - sender: Класс модели, который отправил сигнал.
+        - instance: Фактический экземпляр, который сохраняется.
+        - **kwargs: Дополнительные именованные аргументы.
+
+    Возвращает:
+        None
+    """
     if kwargs['created']:
         preview = instance.preview
         instance_id = instance.pk
@@ -19,6 +30,17 @@ def send_news_notification(sender, instance, **kwargs):
 
 @receiver(m2m_changed, sender=Post.postCategory)
 def notify_about_new_post(sender, instance=None, **kwargs):
+    """
+    Уведомляет подписчиков о новом посте в категории.
+
+    Аргументы:
+        sender (Any): Объект-отправитель.
+        instance (Any, опционально): Объект-экземпляр. По умолчанию None.
+        **kwargs (Any): Дополнительные именованные аргументы.
+
+    Возвращает:
+        None
+    """
     if kwargs['action'] == 'post_add':
         categories = instance.postCategory.all()
         subscribers = [s.email for category in categories for s in category.subscribers.all()]

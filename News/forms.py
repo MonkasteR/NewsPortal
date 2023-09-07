@@ -23,6 +23,15 @@ class NewsForm(forms.ModelForm):
         }
 
     def clean(self):
+        """
+        Очищает введенные данные и убеждается, что описание не совпадает с заголовком.
+
+        Возвращает:
+            cleaned_data (dict): Очищенные введенные данные.
+
+        Выбрасывает:
+            ValidationError: Если описание совпадает с заголовком.
+        """
         cleaned_data = super().clean()
         title = cleaned_data.get("title")
         text = cleaned_data.get("text")

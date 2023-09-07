@@ -21,11 +21,23 @@ class PostList(ListView):
     paginate_by = 10
 
     def get_queryset(self):
+        """
+        Возвращает queryset для представления NewsFilter.
+
+        param self: Экземпляр класса.
+        return: Отфильтрованный queryset на основе параметров request.GET.
+        """
         queryset = super().get_queryset()
         self.filterset = NewsFilter(self.request.GET, queryset)
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
+        """
+        Получает данные контекста для представления.
+
+        param **kwargs: Дополнительные именованные аргументы для родительского метода.
+        return: Словарь данных контекста.
+        """
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
@@ -40,6 +52,15 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('posts_list')
 
     def form_valid(self, form):
+        """
+        Сохраняет форму и возвращает результат вызова метода form_valid родительского класса.
+
+        Аргументы:
+            form: Объект формы.
+
+        Возвращает:
+            Результат вызова метода form_valid родительского класса.
+        """
         post = form.save(commit=False)
         post.categoryType = Post.NEWS
         return super().form_valid(form)
@@ -74,6 +95,15 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('posts_list')
 
     def form_valid(self, form):
+        """
+        Сохраняет данные формы и устанавливает тип категории поста на 'ARTICLE'.
+
+        Аргументы:
+            form: Объект формы, содержащий данные для сохранения.
+
+        Возвращает:
+            Результат вызова метода 'form_valid' родительского класса.
+        """
         post = form.save(commit=False)
         post.categoryType = Post.ARTICLE
         return super().form_valid(form)
@@ -96,10 +126,28 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
 
 class SubscriptionView(View):
     def get(self, request):
+        """
+        Метод GET для обработки HTTP GET-запросов.
+
+        Аргументы:
+            request (HttpRequest): Объект HTTP-запроса.
+
+        Возвращает:
+            HttpResponse: Отображенный ответ, содержащий шаблон 'subscriptions.html'.
+        """
         return render(request, 'news/subscriptions.html')
 
     @login_required
     def subscriptions(request):
+        """
+        Отображает страницу подписок для авторизованного пользователя.
+
+        Параметры:
+            request (HttpRequest): Объект HTTP-запроса.
+
+        Возвращает:
+            HttpResponse: Отображенный HTML-шаблон для страницы подписок.
+        """
         user_email = request.user.email
         categories = Category.objects.all()
         context = {
@@ -117,11 +165,24 @@ class CategoryListView(ListView):
     # ordering = '-dateCreation'
     # paginate_by = 10
     def get_queryset(self):
+        """
+        Получает queryset постов, отфильтрованных по типу категории и отсортированных по дате создания.
+
+        Возвращает:
+            queryset: queryset объектов Post, отфильтрованных по типу категории и отсортированных по дате создания.
+        """
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
         queryset = Post.objects.filter(categoryType=self.category).order_by('-dateCreation')
         return queryset
 
     def get_context_data(self, **kwargs):
+        """
+        Получает данные контекста для представления.
+
+        param kwargs: Необязательные именованные аргументы.
+
+        return: Словарь, содержащий данные контекста.
+        """
         context = super().get_context_data(**kwargs)
         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
         context['category'] = self.category
@@ -131,6 +192,16 @@ class CategoryListView(ListView):
 @login_required
 @csrf_protect
 def subscriptions(request):
+    """
+    Функция представления для управления подписками пользователя.
+    Данная функция декорирована декораторами `@login_required` и `@csrf_protect` для обеспечения доступа только авторизованных пользователей и защиты от атак подделки межсайтовых запросов.
+
+    Параметры:
+        request (HttpRequest): Объект HTTP-запроса.
+
+    Возвращает:
+        HttpResponse: Объект HTTP-ответа с отображенной страницей подписок.
+    """
     if request.method == 'POST':
         category_id = request.POST.get('category_id')
         category = Category.objects.get(id=category_id)
@@ -161,6 +232,16 @@ def subscriptions(request):
 
 @login_required
 def subscribe(request, pk):
+    """
+    Подписывает пользователя на категорию.
+
+    Аргументы:
+        request: Объект HTTP-запроса.
+        pk (int): ID категории, на которую нужно подписаться.
+
+    Возвращает:
+        HttpResponse: Отображенный HTML-ответ с подписанной категорией и сообщением об успехе.
+    """
     user = request.user
     category = Category.objects.get(id=pk)
     category.subscribers.add(user)

@@ -11,6 +11,23 @@ class Author(models.Model):
 
     # rating__sum
     def update_rating(self):
+        """
+        Обновляет рейтинг текущего автора.
+
+        Эта функция вычисляет рейтинг для автора текущего экземпляра, суммируя рейтинги
+        постов, комментариев и комментариев к постам автора. Рейтинг вычисляется по следующей формуле:
+
+        ratingAuthor = (authorPostRating * 3) + authorCommentRating + authorPostCommentRating
+
+        Параметры:
+            self (Author): Текущий экземпляр автора.
+
+        Возвращает:
+            None
+
+        Выбрасывает:
+            None
+        """
         authorPostRating = Post.objects.filter(author_id=self.pk).aggregate(count=Coalesce(Sum('rating'), 0))['count']
         authorCommentRating = Comment.objects.filter(commentUser_id=self.authorUser).aggregate(
             count=Coalesce(Sum('rating'), 0))['count']
@@ -22,6 +39,11 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
+        """
+        Возвращает имя пользователя автора в виде строки.
+
+        return: Строка, представляющая имя пользователя автора.
+        """
         return self.authorUser.username
 
     class Meta:
@@ -34,6 +56,10 @@ class Category(models.Model):
     subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):
+        """
+        Возвращает строковое представление объекта.
+        return: Строка, представляющая имя объекта.
+        """
         return self.name
 
     class Meta:
