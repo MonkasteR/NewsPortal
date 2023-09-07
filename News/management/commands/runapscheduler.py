@@ -20,6 +20,16 @@ class Command(BaseCommand):
     help = "Runs APScheduler."
 
     def handle(self, *args, **options):
+        """
+        Запускает планировщик для выполнения заданий в определенные моменты времени.
+
+        Параметры:
+        - args: Позиционные аргументы, переданные в функцию.
+        - options: Именованные аргументы, переданные в функцию.
+
+        Возвращает:
+        None
+        """
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
@@ -53,6 +63,18 @@ class Command(BaseCommand):
 
 
 def my_job():
+    """
+    Отправляет еженедельное письмо подписчикам со списком последних постов.
+
+    Эта функция извлекает посты, созданные за последнюю неделю, и фильтрует их по категориям.
+    Затем она извлекает подписчиков, заинтересованных в этих категориях, и отправляет им электронное письмо с перечислением последних постов.
+
+    Параметры:
+    Нет
+
+    Возвращает:
+    Нет
+    """
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(dateCreation__gte=last_week)
@@ -79,4 +101,9 @@ def my_job():
 
 @util.close_old_connections
 def delete_old_job_executions(max_age=604_800):
+    """
+    Удаляет старые выполнения заданий.
+
+    param max_age: Максимальный возраст выполнений заданий для удаления, в секундах. По умолчанию 604_800 (7 дней).
+    """
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
