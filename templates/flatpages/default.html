@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load cache %}
 <html lang="en">
 <head>
 	<meta charset="utf-8"/>
@@ -16,6 +17,7 @@
 <!-- Responsive navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container">
+		{% cache 300 newsportal %}
 		<a class="navbar-brand" href="/news/">NewsPortal</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 		        data-bs-target="#navbarSupportedContent"
@@ -23,6 +25,7 @@
 		        aria-label="Toggle navigation"><span
 			class="navbar-toggler-icon"></span></button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		{% endcache %}
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="/admin/">Admin</a>
 				</li>
@@ -35,6 +38,7 @@
 					<li class="nav-item"><a class="nav-link" href="/news/create/">Create News</a></li>{% endif %}
 				{% if perms.News.add_post %}
 					<li class="nav-item"><a class="nav-link" href="/articles/create/">Create Articles</a></li>{% endif %}
+				{% cache 300 dropdown %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
 					   data-bs-toggle="dropdown" aria-expanded="false">Новости</a>
@@ -45,6 +49,7 @@
 						{% endfor %}
 					</ul>
 				</li>
+				{% endcache %}
 			</ul>
 		</div>
 	</div>
