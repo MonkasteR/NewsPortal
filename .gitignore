@@ -267,3 +267,4 @@ cython_debug/
 
 celerybeat-*
 
+/cache_files/
