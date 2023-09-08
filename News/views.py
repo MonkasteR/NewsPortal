@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.cache import cache
 from django.db.models import Exists, OuterRef
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -84,6 +85,20 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'news/one_news.html'
     context_object_name = 'one_news'
+
+    def get_object(self, *args, **kwargs):
+        """
+        Извлекает объект из кэша, если он существует, в противном случае извлекает его из базы данных и кэширует.
+
+        :param args: Позиционные аргументы, передаваемые в функцию.
+        :param kwargs: Именованные аргументы, передаваемые в функцию.
+        :return: Извлеченный объект.
+        """
+        obj = cache.get(f'news-{self.kwargs["pk"]}')
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'news-{self.kwargs["pk"]}', obj)
+        return obj
 
 
 class ArticleCreate(PermissionRequiredMixin, CreateView):
