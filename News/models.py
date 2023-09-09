@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import models
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
@@ -94,6 +95,20 @@ class Post(models.Model):
             str: Строковое представление объекта.
         """
         return f'{self.author.authorUser.username} : {self.title} : {self.text[0:123]}...'
+
+    def save(self, *args, **kwargs):
+        """
+        Сохраняет экземпляр в базе данных и удаляет кэш для соответствующего объекта новости.
+
+        Параметры:
+            *args: Переменное число позиционных аргументов.
+            **kwargs: Произвольное число именованных аргументов.
+
+        Возвращает:
+            None
+        """
+        super().save(*args, **kwargs)
+        cache.delete(f'news-{self.pk}')
 
     def get_absolute_url(self):
         """
