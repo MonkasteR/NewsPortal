@@ -10,4 +10,3 @@ class NewsConfig(AppConfig):
         Инициализирует объект и импортирует необходимые сигналы для модуля News.
         """
         # noinspection PyUnresolvedReferences
-        import News.signals

@@ -22,7 +22,6 @@ def send_news_notification(sender, instance, **kwargs):
         None
     """
     if kwargs['created']:
-        preview = instance.preview
         instance_id = instance.pk
         subscribers = Subscriber.objects.all()
         to_email = [subscriber.user.email for subscriber in subscribers]

@@ -79,7 +79,7 @@ def my_task():
 
     )
     msg = EmailMultiAlternatives(
-        subject=f'Новые посты за неделю',
+        subject='Новые посты за неделю',
         body='',
         from_email=DEFAULT_FROM_EMAIL,
         to=subscribers,
