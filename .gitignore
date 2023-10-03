@@ -269,3 +269,5 @@ celerybeat-*
 
 /cache_files/
 /.ruff_cache/
+/mydata.xml
+/mydata.json
