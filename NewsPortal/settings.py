@@ -9,10 +9,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import logging
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -186,3 +189,109 @@ CACHES = {
 #         "LOCATION": "redis://localhost:6379",
 #     }
 # }
+
+# Устанавливаем путь к каталогу для хранения логов
+LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
+
+# Создаем каталог для хранения логов, если его нет
+if not os.path.exists(LOGGING_DIR):
+    os.makedirs(LOGGING_DIR)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'console_filter': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'file_email_filter': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'formatters': {
+        'console_formatter': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
+        },
+        'file_formatter': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'style': '{',
+        },
+        'errors_formatter': {
+            'format': '{asctime} {levelname} {message} {pathname}\n{exc_info}',
+            'style': '{',
+        },
+        'security_formatter': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_formatter',
+            'filters': ['console_filter'],
+        },
+        'general_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'general.log'),
+            'formatter': 'file_formatter',
+            'filters': ['file_email_filter'],
+        },
+        'errors_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'errors.log'),
+            'formatter': 'errors_formatter',
+            'filters': ['file_email_filter'],
+        },
+        'email': {
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': False,
+            'formatter': 'errors_formatter',
+            'level': 'ERROR',
+            'filters': ['file_email_filter'],
+        },
+        'security_file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'security.log'),
+            'formatter': 'security_formatter',
+            'filters': ['file_email_filter'],
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'general_file', 'errors_file', 'email', 'security_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['errors_file', 'email'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': ['errors_file', 'email'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.template': {
+            'handlers': ['errors_file', 'email'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['errors_file', 'email'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'django.security': {
+            'handlers': ['security_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+    'root': {
+        'handlers': ['console', 'general_file'],
+        'level': 'DEBUG',
+    },
+}
