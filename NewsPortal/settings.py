@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-%o29qkzfg!g_l=*5t0h=m=^#nzc1b!n)xq1)(j8#atqfo51@#p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 SITE_ID = 1
 
@@ -217,6 +217,10 @@ LOGGING = {
             'format': '{asctime} {levelname} {module} {message}',
             'style': '{',
         },
+        'warning_formatter': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'style': '{',
+        },
         'errors_formatter': {
             'format': '{asctime} {levelname} {message} {pathname}\n{exc_info}',
             'style': '{',
@@ -227,6 +231,16 @@ LOGGING = {
         },
     },
     'handlers': {
+        'console_error': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'errors_formatter',
+            'filters': ['console_filter'],
+        },
+        'console_warning': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning_formatter',
+            'filters': ['console_filter'],
+        },
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'console_formatter',
@@ -259,8 +273,21 @@ LOGGING = {
         },
     },
     'loggers': {
+        # 'console': {
+        #     'handlers': ['console', 'general_file', 'errors_file', 'email', 'security_file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
         'django': {
-            'handlers': ['console', 'general_file', 'errors_file', 'email', 'security_file'],
+            'handlers': [
+                'console_error',
+                'console_warning',
+                'console',
+                'general_file',
+                'errors_file',
+                'email',
+                'security_file'
+            ],
             'level': 'DEBUG',
             'propagate': True,
         },
@@ -291,7 +318,15 @@ LOGGING = {
         },
     },
     'root': {
-        'handlers': ['console', 'general_file'],
+        'handlers': [
+            'console_error',
+            'console_warning',
+            'console',
+            'general_file',
+            'errors_file',
+            'email',
+            'security_file'
+        ],
         'level': 'DEBUG',
     },
 }
