@@ -5,6 +5,8 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse
 
+from NewsPortal.settings import logger
+
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -61,6 +63,7 @@ class Category(models.Model):
         Возвращает строковое представление объекта.
         return: Строка, представляющая имя объекта.
         """
+        logger.info(f'Category: {self.name}')
         return self.name
 
     class Meta:
@@ -94,6 +97,7 @@ class Post(models.Model):
         Возвращает:
             str: Строковое представление объекта.
         """
+        logger.info(f'Post: {self.title}')
         return f'{self.author.authorUser.username} : {self.title} : {self.text[0:123]}...'
 
     def save(self, *args, **kwargs):
@@ -122,6 +126,7 @@ class Post(models.Model):
         Возвращает:
             str: Абсолютный URL для текущего объекта.
         """
+        logger.info(f'URL: {self.get_absolute_url()}')
         return reverse('one_news', args=[str(self.id)])
 
     def like(self):
@@ -136,6 +141,7 @@ class Post(models.Model):
         """
         self.rating = models.F('rating') + 1
         self.save()
+        logger.info('Task: like')
 
     def dislike(self):
         """
@@ -147,6 +153,7 @@ class Post(models.Model):
         """
         self.rating = models.F('rating') - 1
         self.save()
+        logger.info('Task: dislike')
 
     def preview(self):
         """
@@ -154,6 +161,7 @@ class Post(models.Model):
 
         :return: Строка, представляющая предпросмотр текста.
         """
+        logger.info('Task: preview')
         return self.text[0:123] + '...'
 
     class Meta:
@@ -172,6 +180,7 @@ class Comment(models.Model):
         """
         Возвращает строковое представление объекта.
         """
+        logger.info(f'Comment: {self.text}')
         return f'{self.commentUser} : {self.text[0:123]}...'
 
     def like(self):
@@ -186,6 +195,7 @@ class Comment(models.Model):
         """
         self.rating = models.F('rating') + 1
         self.save()
+        logger.info('Task: like')
 
     def dislike(self):
         """
@@ -199,6 +209,7 @@ class Comment(models.Model):
         """
         self.rating = models.F('rating') - 1
         self.save()
+        logger.info('Task: dislike')
 
     class Meta:
         verbose_name = 'Комментарий'
@@ -220,6 +231,7 @@ class Subscriber(models.Model):
         """
         Возвращает строковое представление объекта.
         """
+        logger.info(f'Subscriber: {self.user}')
         return str(self.user)
 
     class Meta:

@@ -1,5 +1,4 @@
 import datetime
-import logging
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -12,8 +11,7 @@ from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
 from News.models import Post, Category
-
-logger = logging.getLogger(__name__)
+from NewsPortal.settings import logger
 
 
 class Command(BaseCommand):
@@ -90,7 +88,7 @@ def my_job():
 
     )
     msg = EmailMultiAlternatives(
-        subject=f'Новые посты за неделю',
+        subject='Новые посты за неделю',
         body='',
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=subscribers,
@@ -98,6 +96,7 @@ def my_job():
     )
     msg.attach_alternative(html_content, 'text/html')
     msg.send()
+    logger.info('Task: send_emails')
 
 
 @util.close_old_connections
@@ -109,3 +108,4 @@ def delete_old_job_executions(max_age=604_800):
     По умолчанию 604_800 (7 дней).
     """
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
+    logger.info('Deleted old job executions')

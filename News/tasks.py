@@ -6,6 +6,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
 from News.models import Post, Category
+from News.views import logger
 from NewsPortal.settings import DEFAULT_FROM_EMAIL, SITE_URL
 
 
@@ -39,6 +40,7 @@ def send_notifications(pk, to_email):
     msg.attach_alternative(html_content, 'text/html')
     msg.encoding = 'utf-8'
     msg.send()
+    logger.info('Task: send_notifications')
 
 
 @shared_task
@@ -87,3 +89,4 @@ def my_task():
     )
     msg.attach_alternative(html_content, 'text/html')
     msg.send()
+    logger.info('Task: my_task')

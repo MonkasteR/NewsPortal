@@ -1,6 +1,7 @@
 from django.forms import DateTimeInput
 from django_filters import FilterSet, DateTimeFilter
 
+from NewsPortal.settings import logger
 from .models import Post
 
 
@@ -13,6 +14,7 @@ class NewsFilter(FilterSet):
             attrs={'type': 'datetime-local'},
         ),
     )
+    logger.info('Filter: NewsFilter')
 
     class Meta:
         model = Post

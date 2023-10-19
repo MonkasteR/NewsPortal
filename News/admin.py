@@ -1,5 +1,6 @@
 from django.contrib import admin  # type: ignore
 
+from NewsPortal.settings import logger
 from .models import Category, Comment, Author, Post, Subscriber
 
 
@@ -16,6 +17,7 @@ def delete_all_news(modeladmin, request, queryset):
         None
     """
     Post.objects.all().delete()
+    logger.warning('Task: delete_all_news')
 
 
 def delete_all_ratings(modeladmin, request, queryset):
@@ -31,6 +33,7 @@ def delete_all_ratings(modeladmin, request, queryset):
         None
     """
     Post.objects.all().update(rating=0)
+    logger.warning('Task: delete_all_ratings')
 
 
 def delete_all_comments(modeladmin, request, queryset):
@@ -49,6 +52,7 @@ def delete_all_comments(modeladmin, request, queryset):
     :return: None
     """
     Comment.objects.all().delete()
+    logger.warning('Task: delete_all_comments')
 
 
 class PostCategoryFilter(admin.SimpleListFilter):
@@ -93,6 +97,7 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ('categoryType', 'author', 'dateCreation', PostCategoryFilter)
     search_fields = ('title', 'text')
     actions = [delete_all_news, delete_all_ratings]
+    logger.info('Task: PostAdmin')
 
     def post_category_display(self, obj):
         """

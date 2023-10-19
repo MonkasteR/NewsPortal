@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%o29qkzfg!g_l=*5t0h=m=^#nzc1b!n)xq1)(j8#atqfo51@#p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -225,50 +225,51 @@ LOGGING = {
             'format': '{asctime} {levelname} {message} {pathname}\n{exc_info}',
             'style': '{',
         },
-        'security_formatter': {
-            'format': '{asctime} {levelname} {module} {message}',
-            'style': '{',
-        },
     },
     'handlers': {
         'console_error': {
             'class': 'logging.StreamHandler',
             'formatter': 'errors_formatter',
             'filters': ['console_filter'],
+            'level': 'ERROR',
         },
         'console_warning': {
             'class': 'logging.StreamHandler',
             'formatter': 'warning_formatter',
             'filters': ['console_filter'],
+            'level': 'WARNING',
         },
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'console_formatter',
             'filters': ['console_filter'],
+            'level': 'DEBUG',
         },
         'general_file': {
             'class': 'logging.FileHandler',
             'filename': os.path.join(LOGGING_DIR, 'general.log'),
             'formatter': 'file_formatter',
             'filters': ['file_email_filter'],
+            'level': 'INFO',
         },
         'errors_file': {
             'class': 'logging.FileHandler',
             'filename': os.path.join(LOGGING_DIR, 'errors.log'),
             'formatter': 'errors_formatter',
             'filters': ['file_email_filter'],
+            'level': 'ERROR',
         },
         'email': {
             'class': 'django.utils.log.AdminEmailHandler',
             'include_html': False,
-            'formatter': 'errors_formatter',
+            'formatter': 'warning_formatter',
             'level': 'ERROR',
             'filters': ['file_email_filter'],
         },
         'security_file': {
             'class': 'logging.FileHandler',
             'filename': os.path.join(LOGGING_DIR, 'security.log'),
-            'formatter': 'security_formatter',
+            'formatter': 'file_formatter',
             'filters': ['file_email_filter'],
         },
     },
@@ -278,38 +279,56 @@ LOGGING = {
                 'console_error',
                 'console_warning',
                 'console',
-                'general_file',
-                'errors_file',
-                'email',
-                'security_file'
+                'general_file'
             ],
             'level': 'DEBUG',
             'propagate': True,
         },
+        #     'django': {
+        #         'handlers': [
+        #             'console',
+        #             'general_file',
+        #         ],
+        #         'level': 'DEBUG',
+        #         'propagate': True,
+        #     },
+        #     'django': {
+        #         'handlers': [
+        #             'console_error',
+        #         ],
+        #         'level': 'ERROR',
+        #         'propagate': False,
+        #     },
+        #     'django': {
+        #         'handlers': [
+        #             'console_warning',
+        #         ],
+        #         'level': 'WARNING',
+        #         'propagate': False,
+        #     },
         'django.request': {
             'handlers': ['errors_file', 'email'],
             'level': 'ERROR',
-            'propagate': False,
+            # 'propagate': False,
         },
         'django.server': {
             'handlers': ['errors_file', 'email'],
             'level': 'ERROR',
-            'propagate': False,
+            # 'propagate': False,
         },
         'django.template': {
-            'handlers': ['errors_file', 'email'],
+            'handlers': ['errors_file'],
             'level': 'ERROR',
-            'propagate': False,
+            # 'propagate': False,
         },
         'django.db.backends': {
-            'handlers': ['errors_file', 'email'],
+            'handlers': ['errors_file'],
             'level': 'ERROR',
-            'propagate': False,
+            # 'propagate': False,
         },
         'django.security': {
             'handlers': ['security_file'],
-            'level': 'DEBUG',
-            'propagate': False,
+            # 'propagate': False,
         },
     },
     'root': {

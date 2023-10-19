@@ -1,11 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from NewsPortal.settings import logger
 from .models import Post
 
 
 class NewsForm(forms.ModelForm):
     title = forms.CharField(max_length=128)
+    logger.info('Form: NewsForm')
 
     class Meta:
         model = Post
@@ -35,8 +37,10 @@ class NewsForm(forms.ModelForm):
         cleaned_data = super().clean()
         title = cleaned_data.get("title")
         text = cleaned_data.get("text")
+        logger.info(f'Title: {title}')
 
         if text == title:
+            logger.warning('text == title')
             raise ValidationError(
                 "Описание не может совпадать с заголовком."
             )

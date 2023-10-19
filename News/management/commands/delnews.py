@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from News.models import Category, Post
+from NewsPortal.settings import logger
 
 
 class Command(BaseCommand):
@@ -39,9 +40,13 @@ class Command(BaseCommand):
                     category = Category.objects.get(name=category_name)
                     Post.objects.filter(postCategory=category).delete()
                     self.stdout.write(self.style.SUCCESS(f'Все статьи в категории {category_name} удалены'))
+                    logger.warning(f'Все статьи в категории {category_name} удалены')
                 except Category.DoesNotExist:
                     self.stdout.write(self.style.ERROR(f'Не найдено категории {category_name}'))
+                    logger.error(f'Не найдено категории {category_name}')
             else:
                 self.stdout.write(self.style.ERROR('Отменено'))
+                logger.error('Отменено')
         else:
             self.stdout.write(self.style.ERROR('Не указана категория'))
+            logger.error('Не указана категория')

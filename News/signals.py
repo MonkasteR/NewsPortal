@@ -4,6 +4,7 @@ from django.dispatch import receiver
 
 from News.models import Post, Subscriber
 from News.tasks import send_notifications
+from News.views import logger
 
 
 @login_required
@@ -26,6 +27,7 @@ def send_news_notification(sender, instance, **kwargs):
         subscribers = Subscriber.objects.all()
         to_email = [subscriber.user.email for subscriber in subscribers]
         send_notifications.delay(instance_id, to_email)
+        logger.info('Task: send_news_notification')
 
 
 @receiver(m2m_changed, sender=Post.postCategory)
@@ -45,3 +47,4 @@ def notify_about_new_post(sender, instance=None, **kwargs):
         categories = instance.postCategory.all()
         subscribers = [s.email for category in categories for s in category.subscribers.all()]
         send_notifications(instance.preview(), instance.pk, instance.title, subscribers)
+        logger.info('Task: notify_about_new_post')

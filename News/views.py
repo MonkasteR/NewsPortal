@@ -1,3 +1,4 @@
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache
@@ -9,6 +10,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
+from NewsPortal.settings import logger
 from .filters import NewsFilter
 from .forms import NewsForm
 from .models import Post, Category, Subscriber
@@ -20,6 +22,12 @@ class PostList(ListView):
     template_name = 'news/all_news.html'
     context_object_name = 'all_news'
     paginate_by = 10
+    logger.info('View: all_news')
+
+    logger.info('info: all_news')  # TODO: remove in production
+    logger.error('error: all_news')
+    logger.warning('warning: all_news')
+    logger.critical('critical: all_news')
 
     def get_queryset(self):
         """
@@ -50,6 +58,7 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
     model = Post
     template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
+    logger.info('View: news_create')
 
     def form_valid(self, form):
         """
@@ -72,6 +81,7 @@ class NewsUpdate(PermissionRequiredMixin, UpdateView):
     model = Post
     template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
+    logger.info('View: news_update')
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
@@ -79,12 +89,14 @@ class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news/news_delete.html'
     success_url = reverse_lazy('posts_list')
+    logger.info('View: news_delete')
 
 
 class PostDetail(DetailView):
     model = Post
     template_name = 'news/one_news.html'
     context_object_name = 'one_news'
+    logger.info('View: one_news')
 
     def get_object(self, *args, **kwargs):
         """
@@ -108,6 +120,7 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
     model = Post
     template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
+    logger.info('View: article_create')
 
     def form_valid(self, form):
         """
@@ -130,6 +143,7 @@ class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     model = Post
     template_name = 'news/news_edit.html'
     success_url = reverse_lazy('posts_list')
+    logger.info('View: article_update')
 
 
 class ArticleDelete(PermissionRequiredMixin, DeleteView):
@@ -137,6 +151,7 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news/news_delete.html'
     success_url = reverse_lazy('posts_list')
+    logger.info('View: article_delete')
 
 
 class SubscriptionView(View):
@@ -150,6 +165,7 @@ class SubscriptionView(View):
         Возвращает:
             HttpResponse: Отображенный ответ, содержащий шаблон 'subscriptions.html'.
         """
+        logger.info('View: subscriptions')
         return render(request, 'news/subscriptions.html')
 
     @login_required
@@ -169,6 +185,7 @@ class SubscriptionView(View):
             'user_email': user_email,
             'categories': categories
         }
+        logger.info('View: subscriptions')
         return render(request, 'news/subscriptions.html', context)
 
 
@@ -176,6 +193,7 @@ class CategoryListView(ListView):
     model = Post
     template_name = 'category_list.html'
     context_object_name = 'category_news_list'
+    logger.info('View: category_list')
 
     # ordering = '-dateCreation'
     # paginate_by = 10
@@ -241,6 +259,7 @@ def subscriptions(request):
             )
         )
     ).order_by('name')
+    logger.info('Def: subscriptions')
     return render(
         request,
         'news/subscriptions.html',
@@ -264,4 +283,5 @@ def subscribe(request, pk):
     category = Category.objects.get(id=pk)
     category.subscribers.add(user)
     message = f'Вы успешно подписались на категорию {category}'
+    logger.info('Def: subscribe')
     return render(request, 'subscribe.html', {'category': category, 'message': message})
