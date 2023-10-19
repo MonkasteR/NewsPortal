@@ -273,11 +273,6 @@ LOGGING = {
         },
     },
     'loggers': {
-        # 'console': {
-        #     'handlers': ['console', 'general_file', 'errors_file', 'email', 'security_file'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        # },
         'django': {
             'handlers': [
                 'console_error',
