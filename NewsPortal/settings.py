@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%o29qkzfg!g_l=*5t0h=m=^#nzc1b!n)xq1)(j8#atqfo51@#p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -190,6 +190,8 @@ CACHES = {
 #     }
 # }
 
+DEBUG = False
+
 # Устанавливаем путь к каталогу для хранения логов
 LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
 
@@ -284,28 +286,6 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        #     'django': {
-        #         'handlers': [
-        #             'console',
-        #             'general_file',
-        #         ],
-        #         'level': 'DEBUG',
-        #         'propagate': True,
-        #     },
-        #     'django': {
-        #         'handlers': [
-        #             'console_error',
-        #         ],
-        #         'level': 'ERROR',
-        #         'propagate': False,
-        #     },
-        #     'django': {
-        #         'handlers': [
-        #             'console_warning',
-        #         ],
-        #         'level': 'WARNING',
-        #         'propagate': False,
-        #     },
         'django.request': {
             'handlers': ['errors_file', 'email'],
             'level': 'ERROR',
@@ -333,13 +313,13 @@ LOGGING = {
     },
     'root': {
         'handlers': [
-            'console_error',
-            'console_warning',
-            'console',
+    #         # 'console_error',
+    #         # 'console_warning',
+                # 'console',
             'general_file',
             'errors_file',
             'email',
-            'security_file'
+    #         # 'security_file'
         ],
         'level': 'DEBUG',
     },
