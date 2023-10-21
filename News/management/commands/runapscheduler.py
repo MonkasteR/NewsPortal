@@ -64,9 +64,9 @@ def my_job():
     """
     Отправляет еженедельное письмо подписчикам со списком последних постов.
 
-    Эта функция извлекает посты, созданные за последнюю неделю, и фильтрует их по категориям.
-    Затем она извлекает подписчиков, заинтересованных в этих категориях, и отправляет им электронное письмо
-    с перечислением последних постов.
+    Эта функция извлекает посты, созданные за последнюю неделю, и фильтрует их по 
+    категориям. Затем она извлекает подписчиков, заинтересованных в этих категориях,
+    и отправляет им электронное письмо с перечислением последних постов.
 
     Параметры:
     Нет
@@ -78,7 +78,10 @@ def my_job():
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(dateCreation__gte=last_week)
     categories = set(posts.values_list('postCategory__name', flat=True))
-    subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
+    subscribers = set(
+            Category.objects.filter(name__in=categories).values_list('subscribers__email',
+                                                                     flat=True)
+            )
     html_content = render_to_string(
         'email/daily_post.html',
         {

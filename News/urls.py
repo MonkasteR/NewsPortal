@@ -2,7 +2,17 @@ from django.urls import path
 from django.views.decorators.cache import cache_page
 
 from accounts.views import test_page
-from .views import PostList, PostDetail, NewsCreate, NewsUpdate, NewsDelete, CategoryListView, subscriptions, subscribe
+from .views import (
+        PostList, 
+        PostDetail, 
+        NewsCreate, 
+        NewsUpdate, 
+        NewsDelete, 
+        CategoryListView, 
+        subscriptions, 
+        subscribe,
+        )
+        
 
 urlpatterns = [
     path('', cache_page(60)(PostList.as_view()), name='posts_list'),

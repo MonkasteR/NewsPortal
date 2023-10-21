@@ -1,4 +1,3 @@
-# from datetime import datetime
 import datetime
 
 from celery import shared_task
@@ -46,32 +45,36 @@ def send_notifications(pk, to_email):
 @shared_task
 def my_task():
     """
-    Задача, которая отправляет подписчикам электронное письмо с последними постами за прошедшую неделю.
+    Задача, которая отправляет подписчикам электронное письмо с последними постами за 
+    прошедшую неделю.
 
     Эта задача получает текущую дату и вычисляет дату неделю назад.
-    Затем фильтрует объекты `Post` на основе поля `dateCreation`, выбирая только те посты,
-    которые были созданы за последнюю неделю.
+    Затем фильтрует объекты `Post` на основе поля `dateCreation`, 
+    выбирая только те посты, которые были созданы за последнюю неделю.
     Уникальные категории этих постов извлекаются и хранятся в множестве `categories`.
-    Подписчики получаются путем фильтрации объектов `Category` на основе имен из `categories`
-    и извлечения связанных с ними адресов электронной почты.
+    Подписчики получаются путем фильтрации объектов `Category` на основе имен из 
+    `categories` и извлечения связанных с ними адресов электронной почты.
 
-    HTML-содержимое для электронного письма генерируется с использованием функции `render_to_string`,
-    которая отображает шаблон 'email/daily_post.html' с предоставленными контекстными данными,
-    включая SITE_URL и набор `posts`.
+    HTML-содержимое для электронного письма генерируется с использованием 
+    функции `render_to_string`, которая отображает шаблон 'email/daily_post.html' 
+    с предоставленными контекстными данными, включая SITE_URL и набор `posts`.
 
-    Создается экземпляр `EmailMultiAlternatives` с указанием темы 'Новые посты за неделю',
-    тело оставляется пустым, `from_email` устанавливается на значение `DEFAULT_FROM_EMAIL`,
-    а получатели устанавливаются на множество `subscribers`.
+    Создается экземпляр `EmailMultiAlternatives` с указанием темы 'Новые посты за 
+    неделю', тело оставляется пустым, `from_email` устанавливается на значение 
+    `DEFAULT_FROM_EMAIL`, а получатели устанавливаются на множество `subscribers`.
 
-    HTML-содержимое прикрепляется к электронному письму с помощью метода `attach_alternative`,
-    указывая тип контента как 'text/html'. Наконец, письмо отправляется с помощью метода `send`
-    экземпляра `EmailMultiAlternatives`.
+    HTML-содержимое прикрепляется к электронному письму с помощью метода 
+    `attach_alternative`, указывая тип контента как 'text/html'. Наконец, письмо 
+    отправляется с помощью метода `send` экземпляра `EmailMultiAlternatives`.
     """
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(dateCreation__gte=last_week)
     categories = set(posts.values_list('postCategory__name', flat=True))
-    subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
+    subscribers = set(
+            Category.objects.filter(name__in=categories).values_list('subscribers__email',
+                                                                     flat=True)
+            )
     html_content = render_to_string(
         'email/daily_post.html',
         {

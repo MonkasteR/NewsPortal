@@ -17,8 +17,9 @@ class Author(models.Model):
         """
         Обновляет рейтинг текущего автора.
 
-        Эта функция вычисляет рейтинг для автора текущего экземпляра, суммируя рейтинги
-        постов, комментариев и комментариев к постам автора. Рейтинг вычисляется по следующей формуле:
+        Эта функция вычисляет рейтинг для автора текущего экземпляра, 
+        суммируя рейтинги постов, комментариев и комментариев к постам автора. 
+        Рейтинг вычисляется по следующей формуле:
 
         ratingAuthor = (authorPostRating * 3) + authorCommentRating + authorPostCommentRating
 
@@ -31,9 +32,14 @@ class Author(models.Model):
         Выбрасывает:
             None
         """
-        authorPostRating = Post.objects.filter(author_id=self.pk).aggregate(count=Coalesce(Sum('rating'), 0))['count']
-        authorCommentRating = Comment.objects.filter(commentUser_id=self.authorUser).aggregate(
-            count=Coalesce(Sum('rating'), 0))['count']
+        authorPostRating = Post.objects.filter(author_id=self.pk).aggregate(
+                count=Coalesce(Sum('rating'), 
+                               0)
+                )['count']
+        authorCommentRating = Comment.objects.filter(
+                commentUser_id=self.authorUser).aggregate(count=Coalesce(Sum('rating'), 
+                                                                         0)
+                                                          )['count']
         authorPostCommentRating = Comment.objects.filter(
             commentPost__author__authorUser=self.authorUser).aggregate(
             count=Coalesce(Sum('rating'), 0))['count']
@@ -79,7 +85,11 @@ class Post(models.Model):
         (ARTICLE, 'Статья'),
     )
     dateCreation = models.DateTimeField(auto_now_add=True)
-    categoryType = models.CharField(max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE)
+    categoryType = models.CharField(
+            max_length=2, 
+            choices=CATEGORY_CHOICES, 
+            default=ARTICLE
+            )
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
@@ -90,9 +100,10 @@ class Post(models.Model):
         """
         Возвращает строковое представление объекта.
 
-        Этот метод переопределяет встроенный метод `__str__` для предоставления пользовательского
-        строкового представления объекта. Он объединяет имя пользователя автора, заголовок поста и
-        первые 123 символа текста поста, за которым следует многоточие.
+        Этот метод переопределяет встроенный метод `__str__` для предоставления 
+        пользовательского строкового представления объекта. Он объединяет имя 
+        пользователя автора, заголовок поста и первые 123 символа текста поста, 
+        за которым следует многоточие.
 
         Возвращает:
             str: Строковое представление объекта.
@@ -102,7 +113,8 @@ class Post(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Сохраняет экземпляр в базе данных и удаляет кэш для соответствующего объекта новости.
+        Сохраняет экземпляр в базе данных и удаляет кэш 
+        для соответствующего объекта новости.
 
         Параметры:
             *args: Переменное число позиционных аргументов.
@@ -117,8 +129,8 @@ class Post(models.Model):
     def get_absolute_url(self):
         """
         Генерирует абсолютный URL для текущего объекта.
-        Эта функция использует функцию reverse() для генерации URL-шаблона для представления
-        'one_news', передавая ID текущего объекта в качестве аргумента.
+        Эта функция использует функцию reverse() для генерации URL-шаблона для 
+        представления 'one_news', передавая ID текущего объекта в качестве аргумента.
 
         Параметры:
             self (object): Текущий объект.
@@ -222,8 +234,15 @@ class PostCategory(models.Model):
 
 
 class Subscriber(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='subscriptions')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subscriptions')
+    user = models.ForeignKey(
+            User, on_delete=models.CASCADE, 
+            related_name='subscriptions'
+            )
+    category = models.ForeignKey(
+            Category, 
+            on_delete=models.CASCADE, 
+            related_name='subscriptions'
+            )
 
     # email = models.EmailField()
 
