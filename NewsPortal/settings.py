@@ -190,7 +190,7 @@ CACHES = {
 #     }
 # }
 
-DEBUG = False
+DEBUG = True
 
 # Устанавливаем путь к каталогу для хранения логов
 LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
@@ -198,6 +198,7 @@ LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
 # Создаем каталог для хранения логов, если его нет
 if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
+
 
 LOGGING = {
     'version': 1,
@@ -289,38 +290,52 @@ LOGGING = {
         'django.request': {
             'handlers': ['errors_file', 'email'],
             'level': 'ERROR',
-            # 'propagate': False,
+            'propagate': True,
         },
         'django.server': {
             'handlers': ['errors_file', 'email'],
             'level': 'ERROR',
-            # 'propagate': False,
+            'propagate': True,
         },
         'django.template': {
             'handlers': ['errors_file'],
             'level': 'ERROR',
-            # 'propagate': False,
+            'propagate': True,
         },
         'django.db.backends': {
             'handlers': ['errors_file'],
             'level': 'ERROR',
-            # 'propagate': False,
+            'propagate': True,
         },
         'django.security': {
             'handlers': ['security_file'],
-            # 'propagate': False,
+            # 'level': 'DEBUG',
+            'propagate': True,
         },
+        # 'core': {
+        #     'handlers': [
+        #         'console_error',
+        #         'console_warning',
+        #         'console',
+        #         'general_file',
+        #         'errors_file',
+        #         'email',
+        #         'security_file'
+        #     ],
+        #     'level': 'DEBUG',
+        # },
     },
     'root': {
         'handlers': [
-    #         # 'console_error',
-    #         # 'console_warning',
-                # 'console',
+            'console_error',
+            'console_warning',
+            'console',
             'general_file',
             'errors_file',
             'email',
-    #         # 'security_file'
+            'security_file'
         ],
         'level': 'DEBUG',
     },
+
 }
