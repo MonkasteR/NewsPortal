@@ -15,8 +15,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-logger = logging.getLogger(__name__)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -192,13 +190,24 @@ CACHES = {
 
 DEBUG = True
 
+logger = logging.getLogger(__name__)
+''' Ниже код для установки цветного вывода логов, удобно для консоли '''
+# handler = colorlog.StreamHandler()
+# handler.setFormatter(
+#     colorlog.ColoredFormatter(
+#         '%(log_color)s%(asctime)s %(levelname)s %(name)s %(message)s'
+#     )
+# )
+#
+# logger = colorlog.getLogger(__name__)
+# logger.addHandler(handler)
+
 # Устанавливаем путь к каталогу для хранения логов
 LOGGING_DIR = os.path.join(BASE_DIR, 'logs')
 
 # Создаем каталог для хранения логов, если его нет
 if not os.path.exists(LOGGING_DIR):
     os.makedirs(LOGGING_DIR)
-
 
 LOGGING = {
     'version': 1,
@@ -312,18 +321,6 @@ LOGGING = {
             # 'level': 'DEBUG',
             'propagate': True,
         },
-        # 'core': {
-        #     'handlers': [
-        #         'console_error',
-        #         'console_warning',
-        #         'console',
-        #         'general_file',
-        #         'errors_file',
-        #         'email',
-        #         'security_file'
-        #     ],
-        #     'level': 'DEBUG',
-        # },
     },
     'root': {
         'handlers': [
@@ -337,5 +334,4 @@ LOGGING = {
         ],
         'level': 'DEBUG',
     },
-
 }
