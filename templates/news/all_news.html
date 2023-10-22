@@ -1,12 +1,13 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% load custom_tags %}
+{% load i18n %}
 {% block title %}
-	Новости
+	{% trans "News" %}
 {% endblock title %}
 
 {% block content %}
-	<h1>Все новости</h1>
+	<h1>{% trans "All news" %}</h1>
 	<hr>
 	<form action="" method="get">
 		{{ filterset.form.as_p }}
@@ -15,7 +16,7 @@
 
 	{% if perms.News.add_post %}
 		<br/>
-		<button onclick="window.location.href='{% url 'news_create' %}'">Добавить новость</button>
+		<button onclick="window.location.href='{% url 'news_create' %}'">{% trans "Add news" %}</button>
 	{% endif %}
 
 	{% if all_news %}
@@ -23,11 +24,11 @@
 		<table>
 
 			<tr>
-				<td style="text-align: center;">Заголовок</td>
-				<td style="text-align: center; width: 300px;">Дата публикации</td>
-				<td style="width: 300px;">Краткое содержание</td>
+				<td style="text-align: center;">{% trans "Caption" %}</td>
+				<td style="text-align: center; width: 300px;">{% trans "Publication date" %}</td>
+				<td style="width: 300px;">{% trans "Summary" %}</td>
 				{% if perms.News.change_post or perms.News.delete_post %}
-					<td>Действия</td>
+					<td>{% trans "Actions" %}</td>
 				{% endif %}
 			</tr>
 
@@ -43,10 +44,11 @@
 					<!-- Цензура текста новостей -->
 					<td>
 						{% if perms.News.change_post %}
-							<button onclick="window.location.href='{% url 'news_update' pk=one_news.pk %}'">Изменить</button>
+							<button
+								onclick="window.location.href='{% url 'news_update' pk=one_news.pk %}'">{% trans "Change" %}</button>
 						{% endif %}
 						{% if perms.News.delete_post %}
-							<button onclick="window.location.href='{% url 'news_delete' one_news.pk %}'">Удалить</button>
+							<button onclick="window.location.href='{% url 'news_delete' one_news.pk %}'">{% trans "Delete" %}</button>
 						{% endif %}
 					</td>
 				</tr>
@@ -54,7 +56,7 @@
 
 		</table>
 	{% else %}
-		<h2>Новостей нет!</h2> <!-- Если новостей нет, так и напишем -->
+		<h2>{% trans "No news yet" %}</h2> <!-- Если новостей нет, так и напишем -->
 	{% endif %}
 
 	{% if page_obj.has_previous %}

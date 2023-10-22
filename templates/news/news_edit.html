@@ -1,11 +1,12 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
 {% block title %}
-    Новость {{ object.pk }}
+	{% trans 'News' %} {{ object.pk }}
 {% endblock title %}
 
 {% block content %}
-    <h1>Новость {{ object.pk }} <br> {{ object.title }}</h1>
+	<h1>{% trans 'News' %} {{ object.pk }} <br> {{ object.title }}</h1>
     <form action="" method="post">
         {% csrf_token %}
         {{ form.as_p }}

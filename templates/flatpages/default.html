@@ -27,22 +27,39 @@
 			class="navbar-toggler-icon"></span></button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		{% endcache %}
+		<form action="{% url 'set_language' %}" method="POST"> {% csrf_token %}
+			<!-- Не забываем по csrf_token для POST запросов -->
+			<input type="hidden" name="next" value="{{ redirect_to }}">
+			{% get_current_language as LANGUAGE_CODE %}
+			<select name="language" id="">
+				{% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+				{% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+				{% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+					<option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+						{{ language.name_local }} - {{ language.code }}
+					</option>
+				{% endfor %}
+			</select>
+			<input type="submit" value="set">
+		</form>
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-				<li class="nav-item"><a class="nav-link active" aria-current="page" href="/admin/">Admin</a>
+				<li class="nav-item"><a class="nav-link active" aria-current="page" href="/admin/">{% trans 'Admin' %}</a>
 				</li>
 				{% if user.is_authenticated %}
-					<li class="nav-item"><a class="nav-link" href="/subscriptions/">Subscribe</a></li>{% endif %}
+					<li class="nav-item"><a class="nav-link" href="/subscriptions/">{% trans 'Subscribe' %}</a></li>{% endif %}
 				{% if user.is_authenticated %}
-					<li class="nav-item"><a class="nav-link" href="/accounts/logout/">LogOut</a></li>{% else %}
-					<li class="nav-item"><a class="nav-link" href="/accounts/login/">LogIn</a></li>{% endif %}
+					<li class="nav-item"><a class="nav-link" href="/accounts/logout/">{% trans 'LogOut' %}</a></li>{% else %}
+					<li class="nav-item"><a class="nav-link" href="/accounts/login/">{% trans 'LogIn' %}</a></li>{% endif %}
 				{% if perms.News.add_post %}
-					<li class="nav-item"><a class="nav-link" href="/news/create/">Create News</a></li>{% endif %}
+					<li class="nav-item"><a class="nav-link" href="/news/create/">{% trans 'Create News' %}</a></li>{% endif %}
 				{% if perms.News.add_post %}
-					<li class="nav-item"><a class="nav-link" href="/articles/create/">Create Articles</a></li>{% endif %}
+					<li class="nav-item"><a class="nav-link" href="/articles/create/">{% trans 'Create Articles' %}</a>
+					</li>{% endif %}
 				{% cache 300 dropdown %}
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
-					   data-bs-toggle="dropdown" aria-expanded="false">Новости</a>
+					   data-bs-toggle="dropdown" aria-expanded="false">{% trans 'News' %}</a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 						{% for one_news in news_for_header %}     <!-- Цикл для генерации списка новостей -->
 							<li><a class="dropdown-item" href="/news/{{ one_news.pk }}">{{ one_news.title }}</a>

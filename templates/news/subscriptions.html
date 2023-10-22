@@ -1,11 +1,12 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
 {% block title %}
-	Подписки
+	{% trans 'Subscriptions' %}
 {% endblock title %}
 
 {% block content %}
-	<h4>Еmail пользователя: {{ user.email }}</h4>
+	<h4>{% trans 'User email:' %} {{ user.email }}</h4>
 
 	{% for category in categories %}
 		<p>
@@ -15,11 +16,11 @@
 			<input type="hidden" name="category_id" value="{{ category.id }}"/>
 
 			{% if category.user_subscribed %}
-				<button disabled>Подписаться</button>
-				<button name="action" value="unsubscribe">Отписаться</button>
+				<button disabled>{% trans 'Subscribe' %}</button>
+				<button name="action" value="unsubscribe">{% trans 'Unsubscribe' %}</button>
 			{% else %}
-				<button name="action" value="subscribe">Подписаться</button>
-				<button disabled>Отписаться</button>
+				<button name="action" value="subscribe">{% trans 'Subscribe' %}</button>
+				<button disabled>{% trans 'Unsubscribe' %}</button>
 			{% endif %}
 		</form>
 		</p>

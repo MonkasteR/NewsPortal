@@ -1,8 +1,9 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% load custom_tags %}
+{% load i18n %}
 {% block title %}
-    News {{ one_news.pk }}
+	{% trans 'News' %} {{ one_news.pk }}
 {% endblock title %}
 
 {% block menu %}
@@ -12,11 +13,11 @@
 {% endblock menu %}
 
 {% block content %}
-    <h4>Заголовок: </h4>{{ one_news.title|censorship }}</br> <!-- Цензура заголовков -->
+	<h4>{% trans 'Caption: ' %}</h4>{{ one_news.title|censorship }}</br> <!-- Цензура заголовков -->
     <h4>Текст: </h4>{{ one_news.text|censorship }}</br> <!-- Цензура текста новости -->
-    <h4>Дата создания: </h4>{{ one_news.dateCreation|date:'H:i  d M Y' }}</br>
+	<h4>{% trans 'Date of creation: ' %}</h4>{{ one_news.dateCreation|date:'H:i  d M Y' }}</br>
     <!-- Время и дата создания новости. Время, чтобы было видно, что работает сортировка, а то все новости в один день -->
-    <h4>Рейтинг: </h4>{{ one_news.rating }}</br>
-    <h4>Категория: </h4>{{ one_news.get_categoryType_display }}</br>  <!-- Выводим человеческое значение -->
+	<h4>{% trans 'Rating: ' %}</h4>{{ one_news.rating }}</br>
+	<h4>{% trans 'Category: ' %}</h4>{{ one_news.get_categoryType_display }}</br>  <!-- Выводим человеческое значение -->
 
 {% endblock content %}

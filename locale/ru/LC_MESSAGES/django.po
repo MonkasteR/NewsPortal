@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-22 02:33+0300\n"
+"POT-Creation-Date: 2023-10-22 06:03+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\News\models.py:67
+msgid "category name"
+msgstr "название категории"
 
 #: .\templates\account\base.html:17
 msgid "Messages:"
@@ -43,6 +47,139 @@ msgstr "Войти"
 #: .\templates\account\base.html:34
 msgid "Sign Up"
 msgstr "Зарегистрироваться"
+
+#: .\templates\category_list.html:6
+msgid "News categories"
+msgstr "Категории новостей"
+
+#: .\templates\category_list.html:12 .\templates\flatpages\default.html:49
+#: .\templates\news\subscriptions.html:19
+#: .\templates\news\subscriptions.html:22
+msgid "Subscribe"
+msgstr "Подписаться"
+
+#: .\templates\category_list.html:20
+msgid "Author"
+msgstr "Автор"
+
+#: .\templates\category_list.html:21
+#, fuzzy
+#| msgid "category name"
+msgid "Categories"
+msgstr "название категории"
+
+#: .\templates\flatpages\default.html:46
+msgid "Admin"
+msgstr "Админка"
+
+#: .\templates\flatpages\default.html:51
+msgid "LogOut"
+msgstr "Выйти"
+
+#: .\templates\flatpages\default.html:52
+msgid "LogIn"
+msgstr "Войти"
+
+#: .\templates\flatpages\default.html:54
+msgid "Create News"
+msgstr "Создать новость"
+
+#: .\templates\flatpages\default.html:56
+msgid "Create Articles"
+msgstr "Создать статью"
+
+#: .\templates\flatpages\default.html:60 .\templates\news\all_news.html:6
+#: .\templates\news\news_edit.html:5 .\templates\news\news_edit.html:9
+#: .\templates\news\one_news.html:6
+msgid "News"
+msgstr "Новости"
+
+#: .\templates\news\all_news.html:10
+msgid "All news"
+msgstr "Все новости"
+
+#: .\templates\news\all_news.html:19
+#, fuzzy
+#| msgid "All news"
+msgid "Add news"
+msgstr "Все новости"
+
+#: .\templates\news\all_news.html:27
+msgid "Caption"
+msgstr "Заголовок"
+
+#: .\templates\news\all_news.html:28
+msgid "Publication date"
+msgstr "Дата публикации"
+
+#: .\templates\news\all_news.html:29
+msgid "Summary"
+msgstr "Краткое описание"
+
+#: .\templates\news\all_news.html:31
+msgid "Actions"
+msgstr "Действия"
+
+#: .\templates\news\all_news.html:47
+#: .\venv\Lib\site-packages\django\forms\widgets.py:465
+msgid "Change"
+msgstr "Изменить"
+
+#: .\templates\news\all_news.html:50
+#: .\venv\Lib\site-packages\django\forms\formsets.py:499
+msgid "Delete"
+msgstr "Удалить"
+
+#: .\templates\news\all_news.html:58
+msgid "No news yet"
+msgstr "Новостей нет"
+
+#: .\templates\news\news_delete.html:5 .\templates\news\news_delete.html:9
+#, fuzzy
+#| msgid "Delete"
+msgid "Deleting news"
+msgstr "Удалить"
+
+#: .\templates\news\news_delete.html:13
+msgid "Remove"
+msgstr "Удаляем"
+
+#: .\templates\news\one_news.html:16
+#, fuzzy
+#| msgid "Caption"
+msgid "Caption: "
+msgstr "Заголовок"
+
+#: .\templates\news\one_news.html:18
+#, fuzzy
+#| msgid "Date out of range"
+msgid "Date of creation: "
+msgstr "Дата вне диапазона"
+
+#: .\templates\news\one_news.html:20
+msgid "Rating: "
+msgstr "Рейтинг"
+
+#: .\templates\news\one_news.html:21
+#, fuzzy
+#| msgid "category name"
+msgid "Category: "
+msgstr "название категории"
+
+#: .\templates\news\subscriptions.html:5
+#, fuzzy
+#| msgid "Options"
+msgid "Subscriptions"
+msgstr "Опции"
+
+#: .\templates\news\subscriptions.html:9
+msgid "User email:"
+msgstr "Email пользователя:"
+
+#: .\templates\news\subscriptions.html:20
+#: .\templates\news\subscriptions.html:23
+msgid "Unsubscribe"
+msgstr "Отписаться"
 
 #: .\venv\Lib\site-packages\click\_termui_impl.py:518
 #, python-brace-format
@@ -941,10 +1078,6 @@ msgstr[1] ""
 msgid "Order"
 msgstr "Порядок"
 
-#: .\venv\Lib\site-packages\django\forms\formsets.py:499
-msgid "Delete"
-msgstr "Удалить"
-
 #: .\venv\Lib\site-packages\django\forms\models.py:886
 #, python-format
 msgid "Please correct the duplicate data for %(field)s."
@@ -1002,10 +1135,6 @@ msgstr "Очистить"
 #: .\venv\Lib\site-packages\django\forms\widgets.py:464
 msgid "Currently"
 msgstr "Текущий"
-
-#: .\venv\Lib\site-packages\django\forms\widgets.py:465
-msgid "Change"
-msgstr "Изменить"
 
 #: .\venv\Lib\site-packages\django\forms\widgets.py:794
 msgid "Unknown"
@@ -1357,18 +1486,18 @@ msgstr "Декабрь"
 msgid "This is not a valid IPv6 address."
 msgstr "Это недопустимый IPv6-адрес."
 
-#: .\venv\Lib\site-packages\django\utils\text.py:78
+#: .\venv\Lib\site-packages\django\utils\text.py:84
 #, python-format
 msgctxt "String to return when truncating text"
 msgid "%(truncated_text)s…"
 msgstr "%(truncated_text)s…"
 
-#: .\venv\Lib\site-packages\django\utils\text.py:254
+#: .\venv\Lib\site-packages\django\utils\text.py:269
 msgid "or"
 msgstr "или"
 
 #. Translators: This string is used as a separator between list elements
-#: .\venv\Lib\site-packages\django\utils\text.py:273
+#: .\venv\Lib\site-packages\django\utils\text.py:288
 #: .\venv\Lib\site-packages\django\utils\timesince.py:135
 msgid ", "
 msgstr ", "
@@ -1709,8 +1838,8 @@ msgstr "Не удалось подключиться к qpid с механизм
 msgid "%(prog)s: error: %(message)s\n"
 msgstr "%(prog)s: ошибка: %(message)s\n"
 
-#~ msgid "category name"
-#~ msgstr "название категории"
+#~ msgid "Добавить новость"
+#~ msgstr "Add news"
 
 #~ msgid "Документация Django"
 #~ msgstr "Документация Django"

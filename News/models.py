@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
 from NewsPortal.settings import logger
 
@@ -61,7 +62,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64, unique=True, help_text=_('category name'))
     subscribers = models.ManyToManyField(User, related_name='categories')
 
     def __str__(self):

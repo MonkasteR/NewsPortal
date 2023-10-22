@@ -1,14 +1,16 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %} <!-- Подключаем фильтр цензуры -->
 {% load custom_tags %}
+{% load i18n %}
 {% block title %}
-	Категории новостей
+	{% trans 'News categories' %}
 {% endblock title %}
 
 {% block content %}
 
 	{% if is_not_subscribed %}
-		<p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sn">Подписаться</a>
+		<p class="text-center"><a href="{% url 'subscribe' category.id %}"
+		                          class="btn btn-secondary btn-sn">{% trans 'Subscribe' %}</a>
 		</p>
 	{% endif %}
 	<ul class="list-group list-group-flush">
@@ -16,8 +18,8 @@
 			<li class="list-group-item">
 			<small class="fw-bold">{{ one_news.dateCreation|date:'d.m.Y' }}</small>
 			<a href="{% url 'one_news' one_news.id %}">{{ one_news.title }}</a>
-			<small class="text-muted">(автор: {{ one_news.author }})</small><br>
-			<small class="fw-bold">категории:
+			<small class="text-muted">({% trans 'Author' %}: {{ one_news.author }})</small><br>
+			<small class="fw-bold">{% trans 'Categories' %}:
 				{% for category in one_news.category.all %}
 					<a href="{% url 'category_list' category.pk %}">{{ category }}
 				{% endfor %}
