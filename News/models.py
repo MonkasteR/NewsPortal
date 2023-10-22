@@ -33,13 +33,13 @@ class Author(models.Model):
             None
         """
         authorPostRating = Post.objects.filter(author_id=self.pk).aggregate(
-                count=Coalesce(Sum('rating'), 
-                               0)
-                )['count']
+            count=Coalesce(Sum('rating'),
+                           0)
+        )['count']
         authorCommentRating = Comment.objects.filter(
-                commentUser_id=self.authorUser).aggregate(count=Coalesce(Sum('rating'), 
-                                                                         0)
-                                                          )['count']
+            commentUser_id=self.authorUser).aggregate(count=Coalesce(Sum('rating'),
+                                                                     0)
+                                                      )['count']
         authorPostCommentRating = Comment.objects.filter(
             commentPost__author__authorUser=self.authorUser).aggregate(
             count=Coalesce(Sum('rating'), 0))['count']
@@ -86,10 +86,10 @@ class Post(models.Model):
     )
     dateCreation = models.DateTimeField(auto_now_add=True)
     categoryType = models.CharField(
-            max_length=2, 
-            choices=CATEGORY_CHOICES, 
-            default=ARTICLE
-            )
+        max_length=2,
+        choices=CATEGORY_CHOICES,
+        default=ARTICLE
+    )
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
     postCategory = models.ManyToManyField(Category, through='PostCategory')
     title = models.CharField(max_length=128)
@@ -235,14 +235,14 @@ class PostCategory(models.Model):
 
 class Subscriber(models.Model):
     user = models.ForeignKey(
-            User, on_delete=models.CASCADE, 
-            related_name='subscriptions'
-            )
+        User, on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
     category = models.ForeignKey(
-            Category, 
-            on_delete=models.CASCADE, 
-            related_name='subscriptions'
-            )
+        Category,
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
 
     # email = models.EmailField()
 

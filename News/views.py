@@ -1,4 +1,3 @@
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache
@@ -23,11 +22,6 @@ class PostList(ListView):
     context_object_name = 'all_news'
     paginate_by = 10
     logger.info('View: all_news')
-
-    logger.info('info: all_news')  # TODO: remove in production
-    logger.error('error: all_news')
-    logger.warning('warning: all_news')
-    logger.critical('critical: all_news')
 
     def get_queryset(self):
         """
