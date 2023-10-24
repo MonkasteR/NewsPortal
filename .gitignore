@@ -86,8 +86,8 @@ coverage.xml
 cover/
 
 # Translations
-*.mo
-*.pot
+#*.mo
+#*.pot
 
 # pyenv
 #   For a library or package, you might want to ignore these files since the code is
@@ -271,3 +271,4 @@ celerybeat-*
 /.ruff_cache/
 /mydata.xml
 /mydata.json
+

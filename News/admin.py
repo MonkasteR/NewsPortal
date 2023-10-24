@@ -1,9 +1,8 @@
 from django.contrib import admin  # type: ignore
-from modeltranslation.admin import TranslationAdmin
 
 from NewsPortal.settings import logger
-from .models import Category, MyModel
-from .models import Comment, Author, Post, Subscriber
+# from .models import Category,
+from .models import Comment, Author, Post, Subscriber, Category
 
 
 def delete_all_news(modeladmin, request, queryset):
@@ -135,15 +134,15 @@ class SubscriberAdmin(admin.ModelAdmin):
     search_fields = ('user', 'category')
 
 
-class CategoryAdmin(TranslationAdmin):
-    model = Category
+# class CategoryAdmin(TranslationAdmin):
+#     model = Category
+#
+#
+# class MyModelAdmin(TranslationAdmin):
+#     model = MyModel
 
 
-class MyModelAdmin(TranslationAdmin):
-    model = MyModel
-
-
-admin.site.register(MyModel)
+# admin.site.register(MyModel)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Category)
 admin.site.register(Post, PostAdmin)

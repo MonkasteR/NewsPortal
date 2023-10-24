@@ -306,7 +306,7 @@ LOGGING = {
                 'console',
                 'general_file'
             ],
-            'level': 'DEBUG',
+            'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
@@ -345,6 +345,6 @@ LOGGING = {
             'email',
             'security_file'
         ],
-        'level': 'DEBUG',
+        'level': 'INFO',
     },
 }
