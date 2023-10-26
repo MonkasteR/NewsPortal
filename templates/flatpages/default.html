@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% load cache %}
+{% load tz %}
 <html lang="ru">
 <head>
 	<meta charset="utf-8"/>
@@ -43,6 +44,21 @@
 			</select>
 			<input type="submit" value="set">
 		</form>
+		{% get_current_timezone as TIME_ZONE %}
+		<form action="" method="POST">
+			{% csrf_token %}
+			<label for="timezone">Time zone:</label>
+			<select name="timezone">
+				{% for tz in timezones %}
+					<option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+				{% endfor %}
+			</select>
+			<input type="submit" value="Set">
+		</form>
+
+		{{ TIME_ZONE }}
+		{{ current_time|timezone:TIME_ZONE }} <!-- Отображаем время в выбранном часовом поясе  -->
+
 			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 				<li class="nav-item"><a class="nav-link active" aria-current="page" href="/admin/">{% trans 'Admin' %}</a>
 				</li>

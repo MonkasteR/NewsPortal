@@ -45,6 +45,10 @@ class PostList(ListView):
         context['filterset'] = self.filterset
         return context
 
+    # def post(self, request):
+    #     request.session['django_timezone'] = request.POST['timezone']
+    #     return redirect('/')
+
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
     permission_required = ('News.add_post',)

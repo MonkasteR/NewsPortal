@@ -5,10 +5,11 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.urls import reverse
 from django.utils.translation import gettext as _
-from modeltranslation.translator import register, TranslationOptions
 
 from NewsPortal.settings import logger
-from .models import Category, MyModel
+
+
+# from .models import Category, MyModel
 
 
 class Author(models.Model):
@@ -260,12 +261,11 @@ class Subscriber(models.Model):
         verbose_name = 'Подписчик'
         verbose_name_plural = 'Подписчики'
 
-
-@register(Category)
-class CategoryTranslationOptions(TranslationOptions):
-    fields = ('name',)  # указываем, какие именно поля надо переводить в виде кортежа
-
-
-@register(MyModel)
-class MyModelTranslationOptions(TranslationOptions):
-    fields = ('name',)
+# @register(Category)
+# class CategoryTranslationOptions(TranslationOptions):
+#     fields = ('name',)  # указываем, какие именно поля надо переводить в виде кортежа
+#
+#
+# @register(MyModel)
+# class MyModelTranslationOptions(TranslationOptions):
+#     fields = ('name',)
