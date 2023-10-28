@@ -38,7 +38,7 @@
 				<tr>
 					<td><a href="/news/{{ one_news.pk }}">{{ one_news.title|censorship }}</td>
 					<!-- Цензура заголовков -->
-					<td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'d.m.Y' }}</td>
+					<td style="text-align: center; width: 300px;">{{ one_news.dateCreation|date:'H:i  d M Y' }}</td>
 					<!-- Отображаем дату у каждой новости день. месяц. год-->
 					<td style="width: 300px;"><a
 						href="/news/{{ one_news.pk }}">{{ one_news.text|truncatechars:20|censorship }}</td>

@@ -1,10 +1,12 @@
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.cache import cache
 from django.db.models import Exists, OuterRef
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
@@ -17,6 +19,7 @@ from .models import Post, Category, Subscriber
 
 class PostList(ListView):
     model = Post
+    curent_time = timezone.now()
     ordering = '-dateCreation'
     template_name = 'news/all_news.html'
     context_object_name = 'all_news'
@@ -43,11 +46,26 @@ class PostList(ListView):
         """
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        context['timezones'] = pytz.common_timezones
+        # context['filterset'] = {
+        #     'models': self.filterset,
+        #     'current_time': timezone.localtime(timezone.now()),
+        #     'timezone':  pytz.common_timezones
+        # }
         return context
 
-    # def post(self, request):
-    #     request.session['django_timezone'] = request.POST['timezone']
-    #     return redirect('/')
+    def post(self, request):
+        """
+        Установить переменную сессии `django_timezone` в значение параметра `timezone` в POST-запросе.
+
+        Аргументы:
+            request (HttpRequest): Объект HTTP-запроса.
+
+        Возвращает:
+            HttpResponseRedirect: Ответ-перенаправление на корневой URL (/).
+        """
+        request.session['django_timezone'] = request.POST['timezone']
+        return redirect('/news')
 
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
@@ -92,6 +110,7 @@ class NewsDelete(PermissionRequiredMixin, DeleteView):
 
 class PostDetail(DetailView):
     model = Post
+    curent_time = timezone.now()
     template_name = 'news/one_news.html'
     context_object_name = 'one_news'
     logger.info('View: one_news')
@@ -110,6 +129,39 @@ class PostDetail(DetailView):
             obj = super().get_object(queryset=self.queryset)
             cache.set(f'news-{self.kwargs["pk"]}', obj)
         return obj
+
+    def get_context_data(self, **kwargs):
+        """
+        Возвращает данные контекста для представления.
+
+        Аргументы:
+            **kwargs: Дополнительные именованные аргументы.
+
+        Возвращает:
+            dict: Данные контекста, содержащие текущее время и общие часовые пояса.
+        """
+        context = super().get_context_data(**kwargs)
+
+        context['current_time'] = timezone.localtime(timezone.now())
+        context['timezones'] = pytz.common_timezones
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """
+        Устанавливает временную зону Django в сеансе запроса на основе значения 'timezone' из данных POST запроса.
+
+        Параметры:
+            request (HttpRequest): Объект HTTP-запроса.
+            *args: Список позиционных аргументов.
+            **kwargs: Словарь именованных аргументов.
+
+        Возвращает:
+            HttpResponseRedirect: Ответ-перенаправление на представление 'one_news' с параметром 'pk',
+            взятым из словаря self.kwargs, в качестве URL-параметра.
+        """
+        request.session['django_timezone'] = request.POST.get('timezone', None)
+        return redirect('one_news', pk=self.kwargs['pk'])
 
 
 class ArticleCreate(PermissionRequiredMixin, CreateView):

@@ -14,6 +14,11 @@
 	<link rel="icon" type="image/x-icon" href={% static 'assets/favicon.ico' %}/>
 	<!-- Core theme CSS (includes Bootstrap)-->
 	<link href={% static 'css/styles.css' %} rel="stylesheet"/>
+	<style>
+		body {
+			background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} #fff {% else %} #6c757d {% endif %};
+		}
+	</style>
 </head>
 <body>
 <!-- Responsive navbar-->
