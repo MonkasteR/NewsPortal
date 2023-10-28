@@ -1,7 +1,7 @@
 from django.contrib import admin  # type: ignore
+from modeltranslation.admin import TranslationAdmin
 
 from NewsPortal.settings import logger
-# from .models import Category,
 from .models import Comment, Author, Post, Subscriber, Category
 
 
@@ -99,6 +99,7 @@ class PostAdmin(admin.ModelAdmin):
     search_fields = ('title', 'text')
     actions = [delete_all_news, delete_all_ratings]
     logger.info('Task: PostAdmin')
+    model = Post
 
     def post_category_display(self, obj):
         """
@@ -134,12 +135,9 @@ class SubscriberAdmin(admin.ModelAdmin):
     search_fields = ('user', 'category')
 
 
-# class CategoryAdmin(TranslationAdmin):
-#     model = Category
-#
-#
-# class MyModelAdmin(TranslationAdmin):
-#     model = MyModel
+class CategoryAdmin(TranslationAdmin):
+    model = Category
+
 
 
 # admin.site.register(MyModel)
