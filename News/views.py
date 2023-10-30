@@ -56,7 +56,8 @@ class PostList(ListView):
 
     def post(self, request):
         """
-        Установить переменную сессии `django_timezone` в значение параметра `timezone` в POST-запросе.
+        Установить переменную сессии `django_timezone` в значение параметра
+        `timezone` в POST-запросе.
 
         Аргументы:
             request (HttpRequest): Объект HTTP-запроса.
@@ -149,7 +150,8 @@ class PostDetail(DetailView):
 
     def post(self, request, *args, **kwargs):
         """
-        Устанавливает временную зону Django в сеансе запроса на основе значения 'timezone' из данных POST запроса.
+        Устанавливает временную зону Django в сеансе запроса на основе
+        значения 'timezone' из данных POST запроса.
 
         Параметры:
             request (HttpRequest): Объект HTTP-запроса.
@@ -157,8 +159,8 @@ class PostDetail(DetailView):
             **kwargs: Словарь именованных аргументов.
 
         Возвращает:
-            HttpResponseRedirect: Ответ-перенаправление на представление 'one_news' с параметром 'pk',
-            взятым из словаря self.kwargs, в качестве URL-параметра.
+            HttpResponseRedirect: Ответ-перенаправление на представление 'one_news'
+            с параметром 'pk', взятым из словаря self.kwargs, в качестве URL-параметра.
         """
         request.session['django_timezone'] = request.POST.get('timezone', None)
         return redirect('one_news', pk=self.kwargs['pk'])
