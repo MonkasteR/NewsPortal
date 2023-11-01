@@ -1,0 +1,25 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: '0.1'
+  path:
+    /news/:
+      get:
+        summary: ''
+        description: ''
+        responses:
+          '200':
+            description: ''
+            content:
+              'application/json':
+                schema:
+                  $ref: '#/components/schemas/News'
+components:
+  schemas:
+    News:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string

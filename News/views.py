@@ -47,11 +47,6 @@ class PostList(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         context['timezones'] = pytz.common_timezones
-        # context['filterset'] = {
-        #     'models': self.filterset,
-        #     'current_time': timezone.localtime(timezone.now()),
-        #     'timezone':  pytz.common_timezones
-        # }
         return context
 
     def post(self, request):
