@@ -10,11 +10,14 @@ from django.utils import timezone
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets
 
 from NewsPortal.settings import logger
+from . import serializers
 from .filters import NewsFilter
 from .forms import NewsForm
-from .models import Post, Category, Subscriber
+from .models import Post, Category, Subscriber, Author
 
 
 class PostList(ListView):
@@ -334,3 +337,78 @@ def subscribe(request, pk):
     message = f'Вы успешно подписались на категорию {category}'
     logger.info('Def: subscribe')
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
+
+class PostListViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.PostListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class AuthorViewSet(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = serializers.AuthorSerializer
+
+
+class NewsDeleteViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.NewsDeleteSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class NewsCreateViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.NewsCreateSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class NewsUpdateViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.NewsCreateSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class ArticleCreateViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.ArticleCreateSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class ArticleUpdateViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.ArticleUpdateSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class ArticleDeleteViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.ArticleDeleteSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class SubscriptionViewViewSet(viewsets.ModelViewSet):
+    queryset = Subscriber.objects.all()
+    serializer_class = serializers.SubscriptionSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class CategoryListViewViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = serializers.CategoryListSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter
+
+
+class PostDetailViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = serializers.PostDetailSerializer
+    filter_backends = [DjangoFilterBackend]
+    filter_class = NewsFilter

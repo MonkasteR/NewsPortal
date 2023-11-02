@@ -6,17 +6,17 @@ from News import views
 from News.views import ArticleCreate, ArticleUpdate, ArticleDelete
 
 router = routers.DefaultRouter()
-router.register(r'delete_news', views.NewsDelete)
-router.register(r'create_news', views.NewsCreate)
-router.register(r'update_news', views.NewsUpdate)
-router.register(r'create_article', views.ArticleCreate)
-router.register(r'update_article', views.ArticleUpdate)
-router.register(r'delete_article', views.ArticleDelete)
-router.register(r'subscription', views.SubscriptionView)
-router.register(r'category', views.CategoryListView)
-router.register(r'news', views.PostList)
+router.register(r'delete_news', views.NewsDeleteViewSet)
+router.register(r'create_news', views.NewsCreateViewSet)
+router.register(r'update_news', views.NewsUpdateViewSet)
+router.register(r'create_article', views.ArticleCreateViewSet)
+router.register(r'update_article', views.ArticleUpdateViewSet)
+router.register(r'delete_article', views.ArticleDeleteViewSet)
+router.register(r'subscription', views.SubscriptionViewViewSet)
+router.register(r'category', views.CategoryListViewViewSet)
+router.register(r'news', views.PostListViewSet)
 router.register(r'authors', views.AuthorViewSet)
-router.register(r'post', views.PostDetail)
+router.register(r'post', views.PostDetailViewSet)
 
 
 urlpatterns = [

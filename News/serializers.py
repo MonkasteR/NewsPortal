@@ -61,3 +61,38 @@ class NewsDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'title', 'categoryType', 'dateCreation', 'category']
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'author']
+
+
+class ArticleCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'categoryType', 'dateCreation', 'category']
+
+
+class ArticleUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'categoryType', 'dateCreation', 'category']
+
+
+class ArticleDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'categoryType', 'dateCreation', 'category']
+
+
+class SubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'categoryType', 'dateCreation', 'category']
+
+
+class PostDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ['id', 'title', 'categoryType', 'dateCreation', 'category']
