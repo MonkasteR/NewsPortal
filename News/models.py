@@ -21,8 +21,8 @@ class Author(models.Model):
         """
         Обновляет рейтинг текущего автора.
 
-        Эта функция вычисляет рейтинг для автора текущего экземпляра, 
-        суммируя рейтинги постов, комментариев и комментариев к постам автора. 
+        Эта функция вычисляет рейтинг для автора текущего экземпляра,
+        суммируя рейтинги постов, комментариев и комментариев к постам автора.
         Рейтинг вычисляется по следующей формуле:
 
         ratingAuthor = (authorPostRating * 3) + authorCommentRating + authorPostCommentRating
@@ -37,18 +37,18 @@ class Author(models.Model):
             None
         """
         authorPostRating = Post.objects.filter(author_id=self.pk).aggregate(
-            count=Coalesce(Sum('rating'),
-                           0)
-        )['count']
+            count=Coalesce(Sum("rating"), 0)
+        )["count"]
         authorCommentRating = Comment.objects.filter(
-            commentUser_id=self.authorUser).aggregate(count=Coalesce(Sum('rating'),
-                                                                     0)
-                                                      )['count']
+            commentUser_id=self.authorUser
+        ).aggregate(count=Coalesce(Sum("rating"), 0))["count"]
         authorPostCommentRating = Comment.objects.filter(
-            commentPost__author__authorUser=self.authorUser).aggregate(
-            count=Coalesce(Sum('rating'), 0))['count']
+            commentPost__author__authorUser=self.authorUser
+        ).aggregate(count=Coalesce(Sum("rating"), 0))["count"]
 
-        self.ratingAuthor = authorPostRating * 3 + authorCommentRating + authorPostCommentRating
+        self.ratingAuthor = (
+            authorPostRating * 3 + authorCommentRating + authorPostCommentRating
+        )
         self.save()
 
     def __str__(self):
@@ -60,42 +60,40 @@ class Author(models.Model):
         return self.authorUser.username
 
     class Meta:
-        verbose_name = 'Автор'
-        verbose_name_plural = 'Авторы'
+        verbose_name = "Автор"
+        verbose_name_plural = "Авторы"
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=64, unique=True, help_text=_('category name'))
-    subscribers = models.ManyToManyField(User, related_name='categories')
+    name = models.CharField(max_length=64, unique=True, help_text=_("category name"))
+    subscribers = models.ManyToManyField(User, related_name="categories")
 
     def __str__(self):
         """
         Возвращает строковое представление объекта.
         return: Строка, представляющая имя объекта.
         """
-        logger.info(f'Category: {self.name}')
+        logger.info(f"Category: {self.name}")
         return self.name
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
 
 
 class Post(models.Model):
-    NEWS = 'NW'
-    ARTICLE = 'AR'
+    NEWS = "NW"
+    ARTICLE = "AR"
     CATEGORY_CHOICES = (
         (NEWS, "Новость"),
-        (ARTICLE, 'Статья'),
+        (ARTICLE, "Статья"),
     )
     dateCreation = models.DateTimeField(auto_now_add=True)
     categoryType = models.CharField(
-        max_length=2,
-        choices=CATEGORY_CHOICES,
-        default=ARTICLE
+        max_length=2, choices=CATEGORY_CHOICES, default=ARTICLE
     )
-    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='posts')
-    postCategory = models.ManyToManyField(Category, through='PostCategory')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name="posts")
+    postCategory = models.ManyToManyField(Category, through="PostCategory")
     title = models.CharField(max_length=128)
     text = models.TextField()
     rating = models.SmallIntegerField(default=0)
@@ -104,20 +102,22 @@ class Post(models.Model):
         """
         Возвращает строковое представление объекта.
 
-        Этот метод переопределяет встроенный метод `__str__` для предоставления 
-        пользовательского строкового представления объекта. Он объединяет имя 
-        пользователя автора, заголовок поста и первые 123 символа текста поста, 
+        Этот метод переопределяет встроенный метод `__str__` для предоставления
+        пользовательского строкового представления объекта. Он объединяет имя
+        пользователя автора, заголовок поста и первые 123 символа текста поста,
         за которым следует многоточие.
 
         Возвращает:
             str: Строковое представление объекта.
         """
-        logger.info(f'Post: {self.title}')
-        return f'{self.author.authorUser.username} : {self.title} : {self.text[0:123]}...'
+        logger.info(f"Post: {self.title}")
+        return (
+            f"{self.author.authorUser.username} : {self.title} : {self.text[0:123]}..."
+        )
 
     def save(self, *args, **kwargs):
         """
-        Сохраняет экземпляр в базе данных и удаляет кэш 
+        Сохраняет экземпляр в базе данных и удаляет кэш
         для соответствующего объекта новости.
 
         Параметры:
@@ -128,12 +128,12 @@ class Post(models.Model):
             None
         """
         super().save(*args, **kwargs)
-        cache.delete(f'news-{self.pk}')
+        cache.delete(f"news-{self.pk}")
 
     def get_absolute_url(self):
         """
         Генерирует абсолютный URL для текущего объекта.
-        Эта функция использует функцию reverse() для генерации URL-шаблона для 
+        Эта функция использует функцию reverse() для генерации URL-шаблона для
         представления 'one_news', передавая ID текущего объекта в качестве аргумента.
 
         Параметры:
@@ -142,8 +142,8 @@ class Post(models.Model):
         Возвращает:
             str: Абсолютный URL для текущего объекта.
         """
-        logger.info(f'URL: {self.get_absolute_url()}')
-        return reverse('one_news', args=[str(self.id)])
+        logger.info(f"URL: {self.get_absolute_url()}")
+        return reverse("one_news", args=[str(self.id)])
 
     def like(self):
         """
@@ -155,9 +155,9 @@ class Post(models.Model):
         Возвращает:
             Ничего
         """
-        self.rating = models.F('rating') + 1
+        self.rating = models.F("rating") + 1
         self.save()
-        logger.info('Task: like')
+        logger.info("Task: like")
 
     def dislike(self):
         """
@@ -167,9 +167,9 @@ class Post(models.Model):
 
         Эта функция не возвращает значений.
         """
-        self.rating = models.F('rating') - 1
+        self.rating = models.F("rating") - 1
         self.save()
-        logger.info('Task: dislike')
+        logger.info("Task: dislike")
 
     def preview(self):
         """
@@ -177,12 +177,12 @@ class Post(models.Model):
 
         :return: Строка, представляющая предпросмотр текста.
         """
-        logger.info('Task: preview')
-        return self.text[0:123] + '...'
+        logger.info("Task: preview")
+        return self.text[0:123] + "..."
 
     class Meta:
-        verbose_name = 'Публикация'
-        verbose_name_plural = 'Публикации'
+        verbose_name = "Публикация"
+        verbose_name_plural = "Публикации"
 
 
 class Comment(models.Model):
@@ -196,8 +196,8 @@ class Comment(models.Model):
         """
         Возвращает строковое представление объекта.
         """
-        logger.info(f'Comment: {self.text}')
-        return f'{self.commentUser} : {self.text[0:123]}...'
+        logger.info(f"Comment: {self.text}")
+        return f"{self.commentUser} : {self.text[0:123]}..."
 
     def like(self):
         """
@@ -209,9 +209,9 @@ class Comment(models.Model):
         Возвращает:
             None
         """
-        self.rating = models.F('rating') + 1
+        self.rating = models.F("rating") + 1
         self.save()
-        logger.info('Task: like')
+        logger.info("Task: like")
 
     def dislike(self):
         """
@@ -223,13 +223,13 @@ class Comment(models.Model):
         Возвращает:
             None
         """
-        self.rating = models.F('rating') - 1
+        self.rating = models.F("rating") - 1
         self.save()
-        logger.info('Task: dislike')
+        logger.info("Task: dislike")
 
     class Meta:
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
 
 
 class PostCategory(models.Model):
@@ -239,13 +239,10 @@ class PostCategory(models.Model):
 
 class Subscriber(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE,
-        related_name='subscriptions'
+        User, on_delete=models.CASCADE, related_name="subscriptions"
     )
     category = models.ForeignKey(
-        Category,
-        on_delete=models.CASCADE,
-        related_name='subscriptions'
+        Category, on_delete=models.CASCADE, related_name="subscriptions"
     )
 
     # email = models.EmailField()
@@ -254,12 +251,13 @@ class Subscriber(models.Model):
         """
         Возвращает строковое представление объекта.
         """
-        logger.info(f'Subscriber: {self.user}')
+        logger.info(f"Subscriber: {self.user}")
         return str(self.user)
 
     class Meta:
-        verbose_name = 'Подписчик'
-        verbose_name_plural = 'Подписчики'
+        verbose_name = "Подписчик"
+        verbose_name_plural = "Подписчики"
+
 
 # @register(Category)
 # class CategoryTranslationOptions(TranslationOptions):

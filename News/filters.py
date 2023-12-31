@@ -7,18 +7,18 @@ from .models import Post
 
 class NewsFilter(FilterSet):
     added_after = DateTimeFilter(
-        field_name='dateCreation',
-        lookup_expr='gt',
+        field_name="dateCreation",
+        lookup_expr="gt",
         widget=DateTimeInput(
-            format='%Y-%m-%dT%H:%M',
-            attrs={'type': 'datetime-local'},
+            format="%Y-%m-%dT%H:%M",
+            attrs={"type": "datetime-local"},
         ),
     )
-    logger.info('Filter: NewsFilter')
+    logger.info("Filter: NewsFilter")
 
     class Meta:
         model = Post
         fields = {
-            'title': ['icontains'],
-            'postCategory': ['exact'],
+            "title": ["icontains"],
+            "postCategory": ["exact"],
         }

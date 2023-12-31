@@ -18,7 +18,7 @@ def delete_all_news(modeladmin, request, queryset):
         None
     """
     Post.objects.all().delete()
-    logger.warning('Task: delete_all_news')
+    logger.warning("Task: delete_all_news")
 
 
 def delete_all_ratings(modeladmin, request, queryset):
@@ -34,7 +34,7 @@ def delete_all_ratings(modeladmin, request, queryset):
         None
     """
     Post.objects.all().update(rating=0)
-    logger.warning('Task: delete_all_ratings')
+    logger.warning("Task: delete_all_ratings")
 
 
 def delete_all_comments(modeladmin, request, queryset):
@@ -53,12 +53,12 @@ def delete_all_comments(modeladmin, request, queryset):
     :return: None
     """
     Comment.objects.all().delete()
-    logger.warning('Task: delete_all_comments')
+    logger.warning("Task: delete_all_comments")
 
 
 class PostCategoryFilter(admin.SimpleListFilter):
-    title = ('Category')
-    parameter_name = 'post_category'
+    title = "Category"
+    parameter_name = "post_category"
 
     def lookups(self, request, model_admin):
         """
@@ -94,11 +94,18 @@ class PostCategoryFilter(admin.SimpleListFilter):
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'text', 'post_category_display', 'categoryType', 'rating')
-    list_filter = ('categoryType', 'author', 'dateCreation', PostCategoryFilter)
-    search_fields = ('title', 'text')
+    list_display = (
+        "author",
+        "title",
+        "text",
+        "post_category_display",
+        "categoryType",
+        "rating",
+    )
+    list_filter = ("categoryType", "author", "dateCreation", PostCategoryFilter)
+    search_fields = ("title", "text")
     actions = [delete_all_news, delete_all_ratings]
-    logger.info('Task: PostAdmin')
+    logger.info("Task: PostAdmin")
     model = Post
 
     def post_category_display(self, obj):
@@ -111,33 +118,32 @@ class PostAdmin(admin.ModelAdmin):
         Возвращает:
             str: Строка, содержащая имена категорий, разделенные запятой.
         """
-        return ', '.join([category.name for category in obj.postCategory.all()])
+        return ", ".join([category.name for category in obj.postCategory.all()])
 
-    post_category_display.short_description = 'Category'
+    post_category_display.short_description = "Category"
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('authorUser', 'ratingAuthor')
-    list_filter = ('authorUser', 'ratingAuthor')
-    search_fields = ('authorUser', 'ratingAuthor')
+    list_display = ("authorUser", "ratingAuthor")
+    list_filter = ("authorUser", "ratingAuthor")
+    search_fields = ("authorUser", "ratingAuthor")
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('commentUser', 'commentPost', 'text')
-    list_filter = ('commentPost', 'commentUser')
-    search_fields = ('commentUser', 'commentPost')
+    list_display = ("commentUser", "commentPost", "text")
+    list_filter = ("commentPost", "commentUser")
+    search_fields = ("commentUser", "commentPost")
     actions = [delete_all_comments]
 
 
 class SubscriberAdmin(admin.ModelAdmin):
-    list_display = ('user', 'category')
-    list_filter = ('category', 'user')
-    search_fields = ('user', 'category')
+    list_display = ("user", "category")
+    list_filter = ("category", "user")
+    search_fields = ("user", "category")
 
 
 class CategoryAdmin(TranslationAdmin):
     model = Category
-
 
 
 # admin.site.register(MyModel)

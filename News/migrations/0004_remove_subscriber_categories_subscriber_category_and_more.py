@@ -8,25 +8,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('News', '0003_subscriber'),
+        ("News", "0003_subscriber"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='subscriber',
-            name='categories',
+            model_name="subscriber",
+            name="categories",
         ),
         migrations.AddField(
-            model_name='subscriber',
-            name='category',
-            field=models.ForeignKey(default=3, on_delete=django.db.models.deletion.CASCADE, to='News.category'),
+            model_name="subscriber",
+            name="category",
+            field=models.ForeignKey(
+                default=3,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="News.category",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='subscriber',
-            name='user',
-            field=models.ForeignKey(default=2, on_delete=django.db.models.deletion.CASCADE,
-                                    to=settings.AUTH_USER_MODEL),
+            model_name="subscriber",
+            name="user",
+            field=models.ForeignKey(
+                default=2,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=False,
         ),
     ]

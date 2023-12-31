@@ -18,6 +18,7 @@ class CustomSignupForm(SignupForm):
         user.groups.add(users)
         return user
 
+
 # class SignUpForm(UserCreationForm):
 #     email = forms.EmailField(label="Email")
 #     first_name = forms.CharField(label="Имя")

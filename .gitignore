@@ -271,4 +271,4 @@ celerybeat-*
 /.ruff_cache/
 /mydata.xml
 /mydata.json
-
+.pylintrc

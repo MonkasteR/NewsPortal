@@ -5,7 +5,7 @@ from NewsPortal.settings import logger
 
 
 class Command(BaseCommand):
-    help = 'Удаление статей в определенной категории'
+    help = "Удаление статей в определенной категории"
 
     def add_arguments(self, parser):
         """
@@ -17,7 +17,7 @@ class Command(BaseCommand):
         Возвращаемое значение:
         Нет
         """
-        parser.add_argument('category', type=str)
+        parser.add_argument("category", type=str)
 
     def handle(self, *args, **options):
         """
@@ -30,29 +30,31 @@ class Command(BaseCommand):
         Возвращаемое значение:
         Нет
         """
-        category_name = options.get('category')
+        category_name = options.get("category")
 
         if category_name:
             answer = input(
-                    f'Вы правда хотите удалить все статьи в категории {category_name}? (yes/no): '
-                    )
+                f"Вы правда хотите удалить все статьи в категории {category_name}? (yes/no): "
+            )
 
-            if answer.lower() == 'yes':
+            if answer.lower() == "yes":
                 try:
                     category = Category.objects.get(name=category_name)
                     Post.objects.filter(postCategory=category).delete()
-                    self.stdout.write(self.style.SUCCESS(
-                        f'Все статьи в категории {category_name} удалены')
-                                      )
-                    logger.warning(f'Все статьи в категории {category_name} удалены')
+                    self.stdout.write(
+                        self.style.SUCCESS(
+                            f"Все статьи в категории {category_name} удалены"
+                        )
+                    )
+                    logger.warning(f"Все статьи в категории {category_name} удалены")
                 except Category.DoesNotExist:
-                    self.stdout.write(self.style.ERROR(
-                        f'Не найдено категории {category_name}')
-                                      )
-                    logger.error(f'Не найдено категории {category_name}')
+                    self.stdout.write(
+                        self.style.ERROR(f"Не найдено категории {category_name}")
+                    )
+                    logger.error(f"Не найдено категории {category_name}")
             else:
-                self.stdout.write(self.style.ERROR('Отменено'))
-                logger.error('Отменено')
+                self.stdout.write(self.style.ERROR("Отменено"))
+                logger.error("Отменено")
         else:
-            self.stdout.write(self.style.ERROR('Не указана категория'))
-            logger.error('Не указана категория')
+            self.stdout.write(self.style.ERROR("Не указана категория"))
+            logger.error("Не указана категория")

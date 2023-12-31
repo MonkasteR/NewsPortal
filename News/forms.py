@@ -7,21 +7,21 @@ from .models import Post
 
 class NewsForm(forms.ModelForm):
     title = forms.CharField(max_length=128)
-    logger.info('Form: NewsForm')
+    logger.info("Form: NewsForm")
 
     class Meta:
         model = Post
         fields = [
-            'author',
-            'title',
-            'text',
-            'postCategory',
+            "author",
+            "title",
+            "text",
+            "postCategory",
         ]
         labels = {
-            'author': 'Автор',
-            'title': 'Заголовок',
-            'text': 'Текст',
-            'postCategory': 'Категория',
+            "author": "Автор",
+            "title": "Заголовок",
+            "text": "Текст",
+            "postCategory": "Категория",
         }
 
     def clean(self):
@@ -37,12 +37,10 @@ class NewsForm(forms.ModelForm):
         cleaned_data = super().clean()
         title = cleaned_data.get("title")
         text = cleaned_data.get("text")
-        logger.info(f'Title: {title}')
+        logger.info(f"Title: {title}")
 
         if text == title:
-            logger.warning('text == title')
-            raise ValidationError(
-                "Описание не может совпадать с заголовком."
-            )
+            logger.warning("text == title")
+            raise ValidationError("Описание не может совпадать с заголовком.")
 
         return cleaned_data

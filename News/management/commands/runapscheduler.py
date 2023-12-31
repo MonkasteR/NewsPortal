@@ -42,9 +42,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             delete_old_job_executions,
-            trigger=CronTrigger(
-                day_of_week="fri", hour="18", minute="00", second="30"
-            ),
+            trigger=CronTrigger(day_of_week="fri", hour="18", minute="00", second="30"),
             id="delete_old_job_executions",
             max_instances=1,
             replace_existing=True,
@@ -64,7 +62,7 @@ def my_job():
     """
     Отправляет еженедельное письмо подписчикам со списком последних постов.
 
-    Эта функция извлекает посты, созданные за последнюю неделю, и фильтрует их по 
+    Эта функция извлекает посты, созданные за последнюю неделю, и фильтрует их по
     категориям. Затем она извлекает подписчиков, заинтересованных в этих категориях,
     и отправляет им электронное письмо с перечислением последних постов.
 
@@ -77,29 +75,28 @@ def my_job():
     today = datetime.datetime.now()
     last_week = today - datetime.timedelta(days=7)
     posts = Post.objects.filter(dateCreation__gte=last_week)
-    categories = set(posts.values_list('postCategory__name', flat=True))
+    categories = set(posts.values_list("postCategory__name", flat=True))
     subscribers = set(
-            Category.objects.filter(name__in=categories).values_list('subscribers__email',
-                                                                     flat=True)
-            )
+        Category.objects.filter(name__in=categories).values_list(
+            "subscribers__email", flat=True
+        )
+    )
     html_content = render_to_string(
-        'email/daily_post.html',
+        "email/daily_post.html",
         {
-            'link': settings.SITE_URL,
-            'posts': posts,
-        }
-
+            "link": settings.SITE_URL,
+            "posts": posts,
+        },
     )
     msg = EmailMultiAlternatives(
-        subject='Новые посты за неделю',
-        body='',
+        subject="Новые посты за неделю",
+        body="",
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=subscribers,
-
     )
-    msg.attach_alternative(html_content, 'text/html')
+    msg.attach_alternative(html_content, "text/html")
     msg.send()
-    logger.info('Task: send_emails')
+    logger.info("Task: send_emails")
 
 
 @util.close_old_connections
@@ -111,4 +108,4 @@ def delete_old_job_executions(max_age=604_800):
     По умолчанию 604_800 (7 дней).
     """
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
-    logger.info('Deleted old job executions')
+    logger.info("Deleted old job executions")

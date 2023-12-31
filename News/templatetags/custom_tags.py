@@ -27,7 +27,7 @@ def url_replace(context, **kwargs):
 
         Эта функция использует метод `urlencode` из класса `QueryDict` для кодирования параметров строки запроса.
     """
-    d = context['request'].GET.copy()
+    d = context["request"].GET.copy()
     for k, v in kwargs.items():
         d[k] = v
     return d.urlencode()

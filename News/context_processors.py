@@ -13,9 +13,7 @@ def news_for_header(request):
             Словарь имеет следующую пару ключ-значение:
             - 'news_for_header': Запрос к базе данных, отсортированный по дате создания.
     """
-    return {
-        'news_for_header': Post.objects.order_by('-dateCreation')
-    }
+    return {"news_for_header": Post.objects.order_by("-dateCreation")}
 
 
 def news_pk(request):
@@ -28,6 +26,4 @@ def news_pk(request):
     Возвращает:
         dict: Словарь, содержащий новость с заданным первичным ключом.
     """
-    return {
-        'news_pk': Post.objects.get(pk=request)
-    }
+    return {"news_pk": Post.objects.get(pk=request)}

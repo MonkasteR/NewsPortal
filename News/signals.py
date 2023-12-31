@@ -11,7 +11,7 @@ from News.views import logger
 @receiver(post_save, sender=Post)
 def send_news_notification(sender, instance, **kwargs):
     """
-    Эта функция является приемником сигнала, который срабатывает после сохранения 
+    Эта функция является приемником сигнала, который срабатывает после сохранения
     объекта Post. Она отправляет уведомление всем подписчикам с превью поста.
 
     Параметры:
@@ -22,12 +22,12 @@ def send_news_notification(sender, instance, **kwargs):
     Возвращает:
         None
     """
-    if kwargs['created']:
+    if kwargs["created"]:
         instance_id = instance.pk
         subscribers = Subscriber.objects.all()
         to_email = [subscriber.user.email for subscriber in subscribers]
         send_notifications.delay(instance_id, to_email)
-        logger.info('Task: send_news_notification')
+        logger.info("Task: send_news_notification")
 
 
 @receiver(m2m_changed, sender=Post.postCategory)
@@ -43,8 +43,10 @@ def notify_about_new_post(sender, instance=None, **kwargs):
     Возвращает:
         None
     """
-    if kwargs['action'] == 'post_add':
+    if kwargs["action"] == "post_add":
         categories = instance.postCategory.all()
-        subscribers = [s.email for category in categories for s in category.subscribers.all()]
+        subscribers = [
+            s.email for category in categories for s in category.subscribers.all()
+        ]
         send_notifications(instance.preview(), instance.pk, instance.title, subscribers)
-        logger.info('Task: notify_about_new_post')
+        logger.info("Task: notify_about_new_post")

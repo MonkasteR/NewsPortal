@@ -8,28 +8,34 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('News', '0007_alter_subscriber_email'),
+        ("News", "0007_alter_subscriber_email"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='subscriber',
-            options={'verbose_name': 'Подписчик', 'verbose_name_plural': 'Подписчики'},
+            name="subscriber",
+            options={"verbose_name": "Подписчик", "verbose_name_plural": "Подписчики"},
         ),
         migrations.RemoveField(
-            model_name='subscriber',
-            name='email',
+            model_name="subscriber",
+            name="email",
         ),
         migrations.AlterField(
-            model_name='subscriber',
-            name='category',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subscriptions',
-                                    to='News.category'),
+            model_name="subscriber",
+            name="category",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="subscriptions",
+                to="News.category",
+            ),
         ),
         migrations.AlterField(
-            model_name='subscriber',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subscriptions',
-                                    to=settings.AUTH_USER_MODEL),
+            model_name="subscriber",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="subscriptions",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
     ]

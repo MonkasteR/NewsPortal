@@ -2,7 +2,7 @@ from django import template
 
 register = template.Library()
 # Список цензурируемых слов. По идее создать модель для этого и туда накидать или внешним файлом подключить. Но лень.
-censor_words = ['чебурашка', 'дурак', 'лама']
+censor_words = ["чебурашка", "дурак", "лама"]
 
 
 @register.filter()
@@ -22,8 +22,8 @@ def censorship(value):
     for word in words:
         # Если слово находится в списке для цензуры, заменяем его на звездочки по количеству букв в слове
         if word.lower() in censor_words:  # для проверки приводим к нижнему регистру
-            censored_words.append('*' * len(word))
+            censored_words.append("*" * len(word))
         else:
             censored_words.append(word)
 
-    return ' '.join(censored_words)  # Собираем обратно в текст
+    return " ".join(censored_words)  # Собираем обратно в текст

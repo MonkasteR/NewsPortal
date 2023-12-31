@@ -24,7 +24,7 @@ class TimezoneMiddleware:
         Возвращает:
             Ответ, возвращаемый методом 'get_response'.
         """
-        tzname = request.session.get('django_timezone')
+        tzname = request.session.get("django_timezone")
         if tzname:
             timezone.activate(pytz.timezone(tzname))
         else:

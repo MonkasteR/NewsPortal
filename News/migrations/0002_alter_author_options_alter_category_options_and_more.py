@@ -5,31 +5,37 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('News', '0001_initial'),
+        ("News", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='author',
-            options={'verbose_name': 'Автор', 'verbose_name_plural': 'Авторы'},
+            name="author",
+            options={"verbose_name": "Автор", "verbose_name_plural": "Авторы"},
         ),
         migrations.AlterModelOptions(
-            name='category',
-            options={'verbose_name': 'Категория', 'verbose_name_plural': 'Категории'},
+            name="category",
+            options={"verbose_name": "Категория", "verbose_name_plural": "Категории"},
         ),
         migrations.AlterModelOptions(
-            name='comment',
-            options={'verbose_name': 'Комментарий', 'verbose_name_plural': 'Комментарии'},
+            name="comment",
+            options={
+                "verbose_name": "Комментарий",
+                "verbose_name_plural": "Комментарии",
+            },
         ),
         migrations.AlterModelOptions(
-            name='post',
-            options={'verbose_name': 'Публикация', 'verbose_name_plural': 'Публикации'},
+            name="post",
+            options={"verbose_name": "Публикация", "verbose_name_plural": "Публикации"},
         ),
         migrations.AlterField(
-            model_name='post',
-            name='author',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to='News.author'),
+            model_name="post",
+            name="author",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="posts",
+                to="News.author",
+            ),
         ),
     ]
